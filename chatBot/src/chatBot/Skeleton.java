@@ -33,8 +33,14 @@ public class Skeleton
 				System.out.println("Во что будем играть?");
 				System.out.println("У меня есть интересная игра в \"Города\"");
 <<<<<<< HEAD
+<<<<<<< HEAD
 			    
 			    Towns.cities();
+=======
+			    Towns towns = new Towns();
+			    towns.cities();
+
+>>>>>>> ff4d30f089bc94efd01f65fd0d5887c4b634bb6c
 =======
 			    Towns towns = new Towns();
 			    towns.cities();
