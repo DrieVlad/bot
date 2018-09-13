@@ -1,12 +1,9 @@
 package chatBot;
 
 
-import java.nio.file.Paths;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.*;
-import java.nio.file.Files;
-import java.util.Random;
 import java.util.ArrayList;
 
 public class Towns {
@@ -18,7 +15,7 @@ public class Towns {
 		while(true)
 		{
 			try {
-	            File file = new File("C:\\Users\\1\\Chat-Bot\\bot\\chatBot\\" + lastLetter + ".txt");
+	            File file = new File(lastLetter + ".txt");
 	            FileReader fr = new FileReader(file);
 	            BufferedReader reader = new BufferedReader(fr);
 	            String line = reader.readLine();
