@@ -30,13 +30,13 @@ public class Towns {
 		String alphabet = "јЅ¬√ƒ≈∆«»… ЋћЌќѕ–—“”‘’÷„Ўўёя";
 		Random ran = new Random();
 		int linesCount = 0;
-		int n = ran.nextInt(5);
+		int n = ran.nextInt(28);
 		String lastLetter = alphabet.substring(n, n+1);
 		String line = "";
 		while(true)
 		{
 			try {
-	            File file = new File(lastLetter + ".txt");
+	            File file = new File(System.getProperty("user.dir") + "\\√орода\\" + lastLetter + ".txt");
 	            FileReader fr = new FileReader(file);
 	            BufferedReader reader = new BufferedReader(fr);
 	            line = reader.readLine();
@@ -45,12 +45,6 @@ public class Towns {
 				linesCount = (int)lines.count();				
 				n = ran.nextInt(linesCount);
 				line = Files.lines(path, Charset.defaultCharset()).skip(n).findFirst().get();
-                //System.out.println(line);
-	            //File file = new File("C:\\Users\\1\\Chat-Bot\\bot\\chatBot\\" + lastLetter + ".txt");
-	            //FileReader fr = new FileReader(file);
-	            //BufferedReader reader = new BufferedReader(fr);
-	            //String line = reader.readLine();
-	            //System.out.println(line);
 	            String firstLetter = "";
 	            Boolean flag = false;
 	            while (flag != true ) {
@@ -73,9 +67,12 @@ public class Towns {
 	            	System.out.println("я не знаю больше городов на букву " + lastLetter + ". ¬ы выиграли!");
 	            }
 	            System.out.println("¬аш ход на букву " + lastLetter + "!");
-	            Scanner input = new Scanner(System.in);	           
+	            Scanner input = new Scanner(System.in);
                 while(true) {
-                	String userTown = input.nextLine();   	            
+                	String userTown = input.nextLine(); 
+                	Boolean chekHelp = Skeleton.help(userTown);
+                	if (chekHelp)
+                		System.out.println("Ќичего страшного, продолжай");
     	            firstLetter = userTown.substring(0, 1);
                 	 if (!(lastLetter.equals(firstLetter)|| lastLetter.toLowerCase().equals(firstLetter) ))
                      {
