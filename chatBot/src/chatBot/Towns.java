@@ -1,19 +1,17 @@
 package chatBot;
 
 
-import java.nio.file.*;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.*;
+import java.nio.file.*;
 import java.nio.file.Files;
-import java.util.Random.*;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.stream.*;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.lang.Character;
-import java.util.Arrays;
 
 public class Towns {
 	private static ArrayList<String> usedCities = new ArrayList<String>();
@@ -27,7 +25,7 @@ public class Towns {
 		return lastLetter;
 	}
 	
-	public static void main(String[] args)
+	public static void cities()
 	{
 		String alphabet = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙŞß";
 		Random ran = new Random();
@@ -38,7 +36,11 @@ public class Towns {
 		while(true)
 		{
 			try {
-				Path path = Paths.get(System.getProperty("user.dir") + "\\chatBot\\Ãîğîäà\\" + lastLetter + ".txt");
+	            File file = new File(lastLetter + ".txt");
+	            FileReader fr = new FileReader(file);
+	            BufferedReader reader = new BufferedReader(fr);
+	            line = reader.readLine();
+				Path path = Paths.get(System.getProperty("user.dir") + "\\Ãîğîäà\\" + lastLetter + ".txt");
 				Stream<String> lines = Files.lines(path, Charset.defaultCharset());
 				linesCount = (int)lines.count();				
 				n = ran.nextInt(linesCount);
