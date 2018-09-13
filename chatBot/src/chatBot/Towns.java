@@ -30,7 +30,7 @@ public class Towns {
 		String alphabet = "юабцдефгхийклмнопярстужвьычъ";
 		Random ran = new Random();
 		int linesCount = 0;
-		int n = ran.nextInt(5);
+		int n = ran.nextInt(28);
 		String lastLetter = alphabet.substring(n, n+1);
 		String line = "";
 		while(true)

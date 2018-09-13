@@ -31,12 +31,9 @@ public class Skeleton
 				System.out.println("Сейчас поиграем");
 				System.out.println("Во что будем играть?");
 				System.out.println("У меня есть интересная игра в \"Города\"");
-<<<<<<< HEAD
-				//Towns.main("f");
-=======
 			    Towns towns = new Towns();
 			    towns.cities();
->>>>>>> 2924e7deb9538de7bded47dde59d6afc10b5eaf5
+
 
 			} 
 			else if (s_useResponse.equals("no")) 
