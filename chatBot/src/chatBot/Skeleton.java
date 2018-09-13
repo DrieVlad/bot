@@ -18,7 +18,7 @@ public class Skeleton {
 				System.out.println("Сейчас поиграем");
 				System.out.println("Во что будем играть?");
 				System.out.println("У меня есть интересная игра в \"Города\"");
-				City = new Towns();
+				//Towns.main("f");
 
 			} 
 			else if (s_useResponse.equals("no")) 
