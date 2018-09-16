@@ -51,13 +51,22 @@ public class Skeleton
 	};
 	
     private static String s_aboutMe = "Я бот Евлампий, призванный играть с тобой:))\n"
-			+ "Пиши мне \"help\" в любое время и я напомню как со мной общаться.\n"
+			+ "Пиши мне в любое время: \n"
+			+ "   help \n"
+			+ "   помоги \n"
+			+ "   помощь \n"
+			+ "   расскажи о себе\n\n"
+			+ "И я напомню как со мной общаться.\n\n"
 			+ "Я буду предлагать тебе на выбор разные игры,\n"
-			+ "а твоя задача выбрать игру и наслаждаться:))\n";
+			+ "а твоя задача выбрать игру и наслаждаться:))\n\n"
+			+ "Чтобы выбрать игру напиши мне: \n"
+			+ "   \"да\" или \"погнали\" \n\n"
+			+ "Чтобы отказаться от игры просто напиши мне:\n"
+			+  "   \"нет\" или \"давай дальше\" \n";
     
 	public static void main(String[] args) 
 	{
-		System.out.println("Приветствую тебя, мой дорогой друг!");
+		System.out.println("Приветствую тебя, мой дорогой друг!\n");
 		help("help");
         start();
 	}
@@ -70,20 +79,29 @@ public class Skeleton
 		Random randomer1 = new Random();
 		while (true) 
 		{		
-			System.out.println("Поиграем?");
+			System.out.println("\nПоиграем?");
 			s_useResponse = input.nextLine();
 			help(s_useResponse);
-			if (s_useResponse.equals("yes") || s_useResponse.equals("Да") || s_useResponse.equals("да") || s_useResponse.equals("конечно"))  
+			if (s_useResponse.equals("yes")
+					|| s_useResponse.equals("Да")
+					|| s_useResponse.equals("да")
+					|| s_useResponse.equals("конечно")
+					|| s_useResponse.equals("давай")
+					|| s_useResponse.equals("погнали"))  
 			{				
 				System.out.println("Во что будем играть?");
 				System.out.println("У меня есть интересная игра в \"Города\"");
 			    Towns.gameOfCities();
 			} 
-			else if (s_useResponse.equals("no") || s_useResponse.equals("Нет") || s_useResponse.equals("нет")) 
+			else if (s_useResponse.equals("no")
+					|| s_useResponse.equals("Нет")
+					|| s_useResponse.equals("нет")
+					|| s_useResponse.equals("давай дальше")) 
 			{
 				count = randomer1.nextInt(s_questions.length);				
 				System.out.println(s_questions[count]);
 				s_useResponse = input.nextLine();
+				help(s_useResponse);
 				count = randomer1.nextInt(s_phrases.length);				
 				System.out.print(s_phrases[count] + " ");
 			} 
@@ -96,8 +114,11 @@ public class Skeleton
 	
 	public static boolean help(String s_Chek) 
 	{
-		if (s_Chek.equals("") || s_Chek.equals("help") || s_Chek.equals("помоги")
-				|| s_Chek.equals("помощь") || s_Chek.equals("расскажи о себе")) 
+		if (s_Chek.equals("")
+				|| s_Chek.equals("help")
+				|| s_Chek.equals("помоги")
+				|| s_Chek.equals("помощь")
+				|| s_Chek.equals("расскажи о себе")) 
 		{
 			System.out.print(s_aboutMe);
 			return true;
