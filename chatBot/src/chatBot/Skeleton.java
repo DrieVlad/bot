@@ -74,16 +74,16 @@ public class Skeleton
 	public static void start()
 	{
 		Scanner input = new Scanner(System.in);	
-		String s_useResponse;
+		String s_useResponse  = "";
 		int count;
 		Random randomer1 = new Random();
 		while (true) 
 		{		
 			System.out.println(" Поиграем?");
 			s_useResponse = input.nextLine();
+			s_useResponse = s_useResponse.toLowerCase();
 			help(s_useResponse);
 			if (s_useResponse.equals("yes")
-					|| s_useResponse.equals("Да")
 					|| s_useResponse.equals("да")
 					|| s_useResponse.equals("конечно")
 					|| s_useResponse.equals("давай")
@@ -94,7 +94,6 @@ public class Skeleton
 			    Towns.gameOfCities();
 			} 
 			else if (s_useResponse.equals("no")
-					|| s_useResponse.equals("Нет")
 					|| s_useResponse.equals("нет")
 					|| s_useResponse.equals("давай дальше")) 
 			{
@@ -114,8 +113,7 @@ public class Skeleton
 	
 	public static boolean help(String s_Chek) 
 	{
-		if (s_Chek.equals("")
-				|| s_Chek.equals("help")
+		if (s_Chek.equals("help")
 				|| s_Chek.equals("помоги")
 				|| s_Chek.equals("помощь")
 				|| s_Chek.equals("расскажи о себе")) 
