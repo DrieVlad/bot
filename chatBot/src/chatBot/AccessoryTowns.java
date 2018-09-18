@@ -79,10 +79,14 @@ public class AccessoryTowns {
 	        while((lineInFile = lnr.readLine()) != null)
 	        {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        	lineInFile = lineInFile.toLowerCase();
 	            if (lineInFile.equals(userCity)
 	            		|| lineInFile.equals(Character.toString(userCity.charAt(0))
 	            				+ userCity.substring(1, userCity.length())))
+=======
+	            if (lineInFile.toLowerCase().equals(userCity))
+>>>>>>> 84a0ff709626e5a1643aeab96e4477344929b40a
 =======
 	            if (lineInFile.toLowerCase().equals(userCity))
 >>>>>>> 84a0ff709626e5a1643aeab96e4477344929b40a
@@ -107,6 +111,7 @@ public class AccessoryTowns {
 	{
 		//ѕроверка на то, что слово еще не называлось в игре.
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (usedCities.indexOf(city) == -1
 				&& usedCities.indexOf(city.toLowerCase()) == -1 
 				&& usedCities.indexOf(Character.toString(city.charAt(0))
@@ -114,6 +119,11 @@ public class AccessoryTowns {
      	{  	            	
             usedCities.add(Character.toString(city.charAt(0))
             		+ city.substring(1, city.length()));                       
+=======
+		if (usedCities.indexOf(city.toLowerCase()) == -1)
+     	{  	            	
+            usedCities.add(city.toLowerCase());                       
+>>>>>>> 84a0ff709626e5a1643aeab96e4477344929b40a
 =======
 		if (usedCities.indexOf(city.toLowerCase()) == -1)
      	{  	            	
