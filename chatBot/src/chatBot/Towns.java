@@ -15,7 +15,9 @@ public class Towns {
 	{
 		
 		String alphabet = "אבגדהוזחטךכלםמןנסעףפץצקרש‎‏ÿ";
+		
 		Random ran = new Random();
+		
 		int count = ran.nextInt(28);
 		lastLetter = alphabet.substring(count, count+1);
 		int countPlayer = countPlayers();

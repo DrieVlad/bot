@@ -105,7 +105,8 @@ public class AccessoryTowns {
 	public Boolean checkWordDictionary(String city, ArrayList<String> usedCities)
 	{
 		//проверка на то что город не повторяется
-		if (usedCities.indexOf(city) == -1 && usedCities.indexOf(city.toLowerCase()) == -1 
+		if (usedCities.indexOf(city) == -1
+				&& usedCities.indexOf(city.toLowerCase()) == -1 
 				&& usedCities.indexOf(Character.toString(city.charAt(0))
 						+ city.substring(1, city.length())) == -1)
      	{  	            	
