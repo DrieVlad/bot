@@ -59,7 +59,7 @@ public class AccessoryTowns {
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\chatBot\\Города\\" + firstLetter.toUpperCase() + ".txt")));
 	        while((lineInFile = lnr.readLine()) != null)
 	        {
-	            if (lineInFile.equals(userCity) || lineInFile.equals(Character.toString(userCity.charAt(0)).toUpperCase() + userCity.substring(1, userCity.length())))
+	            if (lineInFile.toLowerCase().equals(userCity))
 	            {
 	            	isItACity += "+";
 	            } 
@@ -78,10 +78,9 @@ public class AccessoryTowns {
 	public Boolean checkTheWordInTheDictionary(String city, ArrayList<String> usedCities)
 	{
 		//Проверка на то, что слово еще не называлось в игре.
-		if (usedCities.indexOf(city) == -1 && usedCities.indexOf(city.toLowerCase()) == -1 
-				&& usedCities.indexOf(Character.toString(city.charAt(0)).toUpperCase() + city.substring(1, city.length())) == -1)
+		if (usedCities.indexOf(city.toLowerCase()) == -1)
      	{  	            	
-            usedCities.add(Character.toString(city.charAt(0)).toUpperCase() + city.substring(1, city.length()));                       
+            usedCities.add(city.toLowerCase());                       
             return true;
      	}
         return false;

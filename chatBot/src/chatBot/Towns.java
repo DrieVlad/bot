@@ -47,13 +47,13 @@ public class Towns {
                 	if (input.hasNextLine())
                 	{
                 		String noUseLine = input.nextLine();
-                		userTown = noUseLine;
-                		if (Skeleton.help(userTown))
+                		userTown = noUseLine.toLowerCase();
+                		if (Skeleton.help(noUseLine))
                 			continue;               	                		
                 	}              	
-    	            firstLetter = userTown.substring(0, 1);    	
+    	            firstLetter = userTown.substring(0, 1).toUpperCase();    	
     	            
-    	            if (!(lastLetter.equals(firstLetter) || lastLetter.toLowerCase().equals(firstLetter)))
+    	            if (!(lastLetter.equals(firstLetter)))
                     {
                      	System.out.println("Ты играешь не по правилам. Назови город на букву " + lastLetter);
                      	continue;

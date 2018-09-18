@@ -11,7 +11,7 @@ public class SkeletonTest {
 	@Test
 	public void testHelp() {
 		boolean check_help = Skeleton.help("help");
-		AssertTrue(check_help);
+		assertTrue(check_help);
 	}
 
 }
