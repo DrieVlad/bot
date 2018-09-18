@@ -38,7 +38,7 @@ public class Skeleton
 			"Весьма впечатляет!",
 			"Ты меня удивил!", 
 			"Я ошарашен!", 
-			"Весьма не дурно",
+			"Весьма не дурно...",
 			"Это серьёзно...",
 			"Идеально!",
 			"Круто!",
@@ -79,7 +79,7 @@ public class Skeleton
 		Random randomer1 = new Random();
 		while (true) 
 		{		
-			System.out.println("\nПоиграем?");
+			System.out.println(" Поиграем?");
 			s_useResponse = input.nextLine();
 			help(s_useResponse);
 			if (s_useResponse.equals("yes")
