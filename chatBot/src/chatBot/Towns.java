@@ -14,10 +14,8 @@ public class Towns {
 	public static void gameOfCities()
 	{
 		
-		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";
-		
-		Random ran = new Random();
-		
+		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";		
+		Random ran = new Random();		
 		int count = ran.nextInt(28);
 		lastLetter = alphabet.substring(count, count+1);
 		int countPlayer = countPlayers();
@@ -25,9 +23,7 @@ public class Towns {
 		{    
 	            runComputer(helper, ran);
 	            
-	            runPlayer(countPlayer, helper);
-	            
-	            Boolean flagCityOfBot = false;
+	            runPlayer(countPlayer, helper);	            
 	               
                 System.out.println("Мой ход!");             	      
 		}		
@@ -39,14 +35,14 @@ public class Towns {
 		
         while (flagCityOfBot != true ) 
         {	   
-        	String line = helper.getCityFromFile(ran, lastLetter);
-        		
-			if (helper.checkWordDictionary(line, usedCities))
+        	String line = helper.getCityFromFile(ran, lastLetter.toLowerCase());
+        	String botCity = line.toLowerCase();	
+			if (helper.checkWordDictionary(botCity, usedCities))
         	{    
 				System.out.println(line);
 				
                 lastLetter = line.substring(line.length() - 1, line.length());                       
-                lastLetter =  helper.check(lastLetter, line);
+                lastLetter =  helper.check(lastLetter, line).toUpperCase();
                 flagCityOfBot = true;	            		
         	}  
         	else 
@@ -65,7 +61,7 @@ public class Towns {
 
 		for (int i = 1; i <= countPlayer; i++) 
         {
-        	System.out.println("Ходит "+ i + " игрок. Слово на букву:"  + lastLetter + "!");
+        	System.out.println("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter + "!");
                
             while(true) 
             {
@@ -81,17 +77,15 @@ public class Towns {
             			continue;        
             		}
             	}              	
-	            firstLetter = userTown.substring(0, 1);    	
+	            firstLetter = userTown.substring(0, 1).toUpperCase();    	
 	            
-	            if (!(lastLetter.equals(firstLetter) 
-	            		|| lastLetter.toLowerCase().equals(firstLetter)))
+	            if (!lastLetter.equals(firstLetter))
                 {
                  	System.out.println("Ты играешь не по правилам. Назови город на букву " + lastLetter);
                  	continue;
                 }
 
-	            boolean isItACity = helper.checkCity(userTown, firstLetter);
-	            
+	            boolean isItACity = helper.checkCity(userTown, firstLetter.toLowerCase());	            
 	            if (!isItACity)
 	            {
 	                System.out.println("Не жульничай! Ты называешь не город:)))");
@@ -101,7 +95,7 @@ public class Towns {
 	            if ( helper.checkWordDictionary(userTown, usedCities))
 	            {
 	            	lastLetter = userTown.substring(userTown.length() - 1, userTown.length());
-	            	lastLetter =  helper.check(lastLetter, userTown);
+	            	lastLetter =  helper.check(lastLetter, userTown).toUpperCase();
              		break;
 	            }        		
              	else 

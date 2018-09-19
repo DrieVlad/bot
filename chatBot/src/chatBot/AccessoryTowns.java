@@ -19,38 +19,35 @@ public class AccessoryTowns {
 	{
 		try
 		{
-			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\src\\chatBot\\Города\\"
+			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\chatBot\\Города\\"
 		        + lastLetter + ".txt");
 			
-		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());
-		    
+		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());		    
     	    int linesCount = (int)lines.count();		
-    	    int count = ran.nextInt(linesCount);
-    	    
+    	    int count = ran.nextInt(linesCount);    	    
 		    String line = Files.lines(pathToCities, Charset.defaultCharset()).skip(count).findFirst().get();
-		    
-		    return line.toLowerCase();
+		    lines.close();
+		    return line;
 		}
 		catch (FileNotFoundException e) 
 		{
-            e.printStackTrace();
-            
+            e.printStackTrace();          
             System.exit(1);
             return "";
         } 
 		catch (IOException e) 
 		{
-            e.printStackTrace();
-            
+            e.printStackTrace();           
             System.exit(1);
             return "";
         }		
 	}
+	
 	public String check(String lastLetter, String line)
 	{
-        //Если город оканчивается на ЬЪЫЙЁ, то нужно вводить город на предпоследнюю букву
-		//Если город оканчивается на ЫЙ, то нужно вводить город на препредпоследнюю букву
-        //String lastLetter = "";
+        //Если город оканчивается на ьыъйё, то нужно вводить город на предпоследнюю букву
+		//Если город оканчивается на ый, то нужно вводить город на препредпоследнюю букву
+
 		if (line.substring(line.length() - 2, line.length()).equals("ый")) 
 		{
 			lastLetter = line.substring(line.length() - 3, line.length() - 2);
@@ -74,16 +71,11 @@ public class AccessoryTowns {
 			String lineInFile = "";
 			boolean isItACity = false;
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(System.getProperty("user.dir")
-					+ "\\src\\chatBot\\Города\\" + firstLetter + ".txt")));
+					+ "\\chatBot\\Города\\" + firstLetter + ".txt")));
 			
 	        while((lineInFile = lnr.readLine()) != null)
 	        {
-	        	lineInFile = lineInFile.toLowerCase();
-	            if (lineInFile.equals(userCity)
-	            		|| lineInFile.equals(Character.toString(userCity.charAt(0))
-	            				+ userCity.substring(1, userCity.length())))
 
-	            if (lineInFile.toLowerCase().equals(userCity))
 	            if (lineInFile.toLowerCase().equals(userCity))
 	            {
 	            	isItACity = true;
@@ -100,18 +92,13 @@ public class AccessoryTowns {
            return false;
         } 
 	}
-
 	
 	public Boolean checkWordDictionary(String city, ArrayList<String> usedCities)
 	{
 		//проверка на то что город не повторяется
-		if (usedCities.indexOf(city) == -1
-				&& usedCities.indexOf(city.toLowerCase()) == -1 
-				&& usedCities.indexOf(Character.toString(city.charAt(0))
-						+ city.substring(1, city.length())) == -1)
+		if (usedCities.indexOf(city) == -1)
      	{  	            	
-            usedCities.add(Character.toString(city.charAt(0))
-            		+ city.substring(1, city.length()));                       
+            usedCities.add(city);                       
             return true;
      	}
         return false;
