@@ -19,63 +19,66 @@ public class AccessoryTowns {
 	{
 		try
 		{
-			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\chatBot\\Города\\"
+			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\src\\chatBot\\Р“РѕСЂРѕРґР°\\"
 		        + lastLetter + ".txt");
 			
-		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());		    
+		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());
+		    
     	    int linesCount = (int)lines.count();		
-    	    int count = ran.nextInt(linesCount);    	    
+    	    int count = ran.nextInt(linesCount);
+    	    
 		    String line = Files.lines(pathToCities, Charset.defaultCharset()).skip(count).findFirst().get();
-		    lines.close();
-		    return line;
+		    
+		    return line.toLowerCase();
 		}
 		catch (FileNotFoundException e) 
 		{
-            e.printStackTrace();          
+            e.printStackTrace();
+            
             System.exit(1);
             return "";
         } 
 		catch (IOException e) 
 		{
-            e.printStackTrace();           
+            e.printStackTrace();
+            
             System.exit(1);
             return "";
         }		
 	}
-	
 	public String check(String lastLetter, String line)
 	{
-        //Если город оканчивается на ьыъйё, то нужно вводить город на предпоследнюю букву
-		//Если город оканчивается на ый, то нужно вводить город на препредпоследнюю букву
-
-		if (line.substring(line.length() - 2, line.length()).equals("ый")) 
+        //Р•СЃР»Рё РіРѕСЂРѕРґ РѕРєР°РЅС‡РёРІР°РµС‚СЃСЏ РЅР° Р¬РЄР«Р™РЃ, С‚Рѕ РЅСѓР¶РЅРѕ РІРІРѕРґРёС‚СЊ РіРѕСЂРѕРґ РЅР° РїСЂРµРґРїРѕСЃР»РµРґРЅСЋСЋ Р±СѓРєРІСѓ
+		//Р•СЃР»Рё РіРѕСЂРѕРґ РѕРєР°РЅС‡РёРІР°РµС‚СЃСЏ РЅР° Р«Р™, С‚Рѕ РЅСѓР¶РЅРѕ РІРІРѕРґРёС‚СЊ РіРѕСЂРѕРґ РЅР° РїСЂРµРїСЂРµРґРїРѕСЃР»РµРґРЅСЋСЋ Р±СѓРєРІСѓ
+        //String lastLetter = "";
+		if (line.substring(line.length() - 2, line.length()).equals("С‹Р№")) 
 		{
 			lastLetter = line.substring(line.length() - 3, line.length() - 2);
 		}	
-		else if (lastLetter.equals("ь")
-				|| lastLetter.equals("ъ")
-				|| lastLetter.equals("ы")
-				|| lastLetter.equals("й")
-				|| lastLetter.equals("ё"))
+		else if (lastLetter.equals("СЊ")
+				|| lastLetter.equals("СЉ")
+				|| lastLetter.equals("С‹")
+				|| lastLetter.equals("Р№")
+				|| lastLetter.equals("С‘"))
 		{
         	lastLetter = line.substring(line.length() - 2, line.length() - 1);
 		}
-		return lastLetter;
+		return lastLetter.toLowerCase();
 	}
 	
 	public boolean checkCity(String userCity, String firstLetter)
 	{
-		//Этот метод проверяет то, что вводимая пользователем строка является городом.
+		//Р­С‚РѕС‚ РјРµС‚РѕРґ РїСЂРѕРІРµСЂСЏРµС‚ С‚Рѕ, С‡С‚Рѕ РІРІРѕРґРёРјР°СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј СЃС‚СЂРѕРєР° СЏРІР»СЏРµС‚СЃСЏ РіРѕСЂРѕРґРѕРј.
+		userCity = userCity.toLowerCase();
 		try
 		{
 			String lineInFile = "";
 			boolean isItACity = false;
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(System.getProperty("user.dir")
-					+ "\\chatBot\\Города\\" + firstLetter + ".txt")));
+					+ "\\src\\chatBot\\Р“РѕСЂРѕРґР°\\" + firstLetter + ".txt")));
 			
 	        while((lineInFile = lnr.readLine()) != null)
 	        {
-
 	            if (lineInFile.toLowerCase().equals(userCity))
 	            {
 	            	isItACity = true;
@@ -92,13 +95,18 @@ public class AccessoryTowns {
            return false;
         } 
 	}
+
 	
 	public Boolean checkWordDictionary(String city, ArrayList<String> usedCities)
 	{
-		//проверка на то что город не повторяется
-		if (usedCities.indexOf(city) == -1)
+		//РїСЂРѕРІРµСЂРєР° РЅР° С‚Рѕ С‡С‚Рѕ РіРѕСЂРѕРґ РЅРµ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ
+		if (usedCities.indexOf(city) == -1
+				&& usedCities.indexOf(city.toLowerCase()) == -1 
+				&& usedCities.indexOf(Character.toString(city.charAt(0))
+						+ city.substring(1, city.length())) == -1)
      	{  	            	
-            usedCities.add(city);                       
+            usedCities.add(Character.toString(city.charAt(0))
+            		+ city.substring(1, city.length()));                       
             return true;
      	}
         return false;
