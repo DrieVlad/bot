@@ -19,7 +19,7 @@ public class AccessoryTowns {
 	{
 		try
 		{
-			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\src\\chatBot\\Города\\"
+			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\chatBot\\������\\"
 		        + lastLetter + ".txt");
 			
 		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());
@@ -29,7 +29,7 @@ public class AccessoryTowns {
     	    
 		    String line = Files.lines(pathToCities, Charset.defaultCharset()).skip(count).findFirst().get();
 		    
-		    return line.toLowerCase();
+		    return line;
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -51,15 +51,15 @@ public class AccessoryTowns {
         //Если город оканчивается на ЬЪЫЙЁ, то нужно вводить город на предпоследнюю букву
 		//Если город оканчивается на ЫЙ, то нужно вводить город на препредпоследнюю букву
         //String lastLetter = "";
-		if (line.substring(line.length() - 2, line.length()).equals("ый")) 
+		if (line.substring(line.length() - 2, line.length()).equals("��")) 
 		{
 			lastLetter = line.substring(line.length() - 3, line.length() - 2);
 		}	
-		else if (lastLetter.equals("ь")
-				|| lastLetter.equals("ъ")
-				|| lastLetter.equals("ы")
-				|| lastLetter.equals("й")
-				|| lastLetter.equals("ё"))
+		else if (lastLetter.equals("�")
+				|| lastLetter.equals("�")
+				|| lastLetter.equals("�")
+				|| lastLetter.equals("�")
+				|| lastLetter.equals("��"))
 		{
         	lastLetter = line.substring(line.length() - 2, line.length() - 1);
 		}
@@ -75,7 +75,7 @@ public class AccessoryTowns {
 			String lineInFile = "";
 			boolean isItACity = false;
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(System.getProperty("user.dir")
-					+ "\\src\\chatBot\\Города\\" + firstLetter + ".txt")));
+					+ "\\chatBot\\������\\" + firstLetter + ".txt")));
 			
 	        while((lineInFile = lnr.readLine()) != null)
 	        {
