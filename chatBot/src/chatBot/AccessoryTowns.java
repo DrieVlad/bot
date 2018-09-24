@@ -1,56 +1,15 @@
 package chatBot;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashSet;
+
 
 public class AccessoryTowns {
 	
-	public  String getCityFromFile(Random ran, String lastLetter)
-	{
-		try
-		{
-			Path pathToCities = Paths.get(System.getProperty("user.dir") + "\\chatBot\\Города\\"
-		        + lastLetter + ".txt");
-			
-		    Stream<String> lines = Files.lines(pathToCities, Charset.defaultCharset());
-		    
-    	    int linesCount = (int)lines.count();		
-    	    int count = ran.nextInt(linesCount);
-    	    
-		    String line = Files.lines(pathToCities, Charset.defaultCharset()).skip(count).findFirst().get();
-		    
-		    return line;
-		}
-		catch (FileNotFoundException e) 
-		{
-            e.printStackTrace();
-            
-            System.exit(1);
-            return "";
-        } 
-		catch (IOException e) 
-		{
-            e.printStackTrace();
-            
-            System.exit(1);
-            return "";
-        }		
-	}
 	public String check(String lastLetter, String line)
 	{
-        //Р•СЃР»Рё РіРѕСЂРѕРґ РѕРєР°РЅС‡РёРІР°РµС‚СЃСЏ РЅР° Р¬РЄР«Р™РЃ, С‚Рѕ РЅСѓР¶РЅРѕ РІРІРѕРґРёС‚СЊ РіРѕСЂРѕРґ РЅР° РїСЂРµРґРїРѕСЃР»РµРґРЅСЋСЋ Р±СѓРєРІСѓ
-		//Р•СЃР»Рё РіРѕСЂРѕРґ РѕРєР°РЅС‡РёРІР°РµС‚СЃСЏ РЅР° Р«Р™, С‚Рѕ РЅСѓР¶РЅРѕ РІРІРѕРґРёС‚СЊ РіРѕСЂРѕРґ РЅР° РїСЂРµРїСЂРµРґРїРѕСЃР»РµРґРЅСЋСЋ Р±СѓРєРІСѓ
-        //String lastLetter = "";
+		//Если город оканчивается на ьйыъё, то нужно вводить город на предпоследнюю букву
+		//Если город оканчивается на ый, то нужно вводить город на препредпоследнюю букву
 		if (line.substring(line.length() - 2, line.length()).equals("ый")) 
 		{
 			lastLetter = line.substring(line.length() - 3, line.length() - 2);
@@ -59,54 +18,36 @@ public class AccessoryTowns {
 				|| lastLetter.equals("й")
 				|| lastLetter.equals("ы")
 				|| lastLetter.equals("ъ")
-				|| lastLetter.equals("ё‘"))
+				|| lastLetter.equals("ё"))
 		{
         	lastLetter = line.substring(line.length() - 2, line.length() - 1);
 		}
 		return lastLetter.toLowerCase();
 	}
 	
-	public boolean checkCity(String userCity, String firstLetter)
+	public boolean checkCity(FileTownsReader reader, String userCity, String firstLetter)
 	{
-		//Р­С‚РѕС‚ РјРµС‚РѕРґ РїСЂРѕРІРµСЂСЏРµС‚ С‚Рѕ, С‡С‚Рѕ РІРІРѕРґРёРјР°СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј СЃС‚СЂРѕРєР° СЏРІР»СЏРµС‚СЃСЏ РіРѕСЂРѕРґРѕРј.
+		//Этот метод проверяет то, что вводимая пользователем строка является городом.
 		userCity = userCity.toLowerCase();
-		try
+
+		ArrayList<String> allTownsOnLetter = reader.dictTowns.get(firstLetter);
+		for (String town : allTownsOnLetter)
 		{
-			String lineInFile = "";
-			boolean isItACity = false;
-			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(System.getProperty("user.dir")
-					+ "\\chatBot\\Города\\" + firstLetter + ".txt")));
-			
-	        while((lineInFile = lnr.readLine()) != null)
-	        {
-	            if (lineInFile.toLowerCase().equals(userCity))
-	            {
-	            	isItACity = true;
-	            	break;
-	            } 
-	        }
-	        lnr.close();
-	        return isItACity;
-		}		
-		catch (IOException e) 
-        {
-           e.printStackTrace();
-           System.exit(1);
-           return false;
-        } 
+			if (town.toLowerCase().equals(userCity))
+			{
+				return true;
+			}
+		}
+		return false;      	
 	}
 
-	
-	public Boolean checkWordDictionary(String city, ArrayList<String> usedCities)
+	public Boolean checkWordDictionary(String city, HashSet<String> usedCities)
 	{
-		//РїСЂРѕРІРµСЂРєР° РЅР° С‚Рѕ С‡С‚Рѕ РіРѕСЂРѕРґ РЅРµ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ
-		if (usedCities.indexOf(city) == -1
-				&& usedCities.indexOf(city.toLowerCase()) == -1 
-				&& usedCities.indexOf(Character.toString(city.charAt(0))
-						+ city.substring(1, city.length())) == -1)
+		//Проверка на то, что город не повторяется. 
+		city = city.toLowerCase();
+		if (!usedCities.contains(city))
      	{  	            	
-            usedCities.add(Character.toString(city.charAt(0))
-            		+ city.substring(1, city.length()));                       
+            usedCities.add(city);                       
             return true;
      	}
         return false;

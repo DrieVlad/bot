@@ -1,9 +1,8 @@
 package chatBot;
 
-
-import java.util.Scanner;
 import java.util.Random;
 import java.util.HashSet;
+
 
 public class Towns {
 	private static HashSet<String> usedCities = new HashSet<String>();
@@ -11,54 +10,24 @@ public class Towns {
 	private static String lastLetter = "";
 	private static AccessoryTowns helper = new AccessoryTowns();
 	private static InOut inOut = new InOut();
-	private static boolean flagOneStep = true;
-		
+	private static FileTownsReader reader = new FileTownsReader();	
 	public static void gameOfCities()
 	{
 		
-		String alphabet = "Р°Р±РІРіРґРµР¶Р·РёРєР»РјРЅРѕРїСЂСЃС‚СѓС„С…С†С‡С€С‰СЌСЋСЏ";		
+		reader.getTowns();
+		
+		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";		
 		Random ran = new Random();		
 		int count = ran.nextInt(alphabet.length());
 		lastLetter = String.valueOf(alphabet.charAt(count));
 		int countPlayer = countPlayers();
+		
 		while(true)
-		{    
-	            //runComputer(helper, ran);
-	            
-	            runPlayer(helper, countPlayer, ran);	            
-	               
-                            	      
+		{             
+	            runPlayer(helper, countPlayer, ran);	            	                                         	      
 		}		
 	}	
-	
-	public static void runComputer(AccessoryTowns helper, Random ran) 
-	{
-		inOut.printData("РњРѕР№ С…РѕРґ: "); 
-		Boolean flagCityOfBot = false;
 		
-        while (flagCityOfBot != true ) 
-        {	   
-        	String line = helper.getCityFromFile(ran, lastLetter.toLowerCase());
-        	String botCity = line.toLowerCase();	
-			if (helper.checkWordDictionary(botCity, usedCities))
-        	{    
-				System.out.println(line);
-				
-                lastLetter = line.substring(line.length() - 1, line.length());                       
-                lastLetter =  helper.check(lastLetter, line).toUpperCase();
-                flagCityOfBot = true;	            		
-        	}  
-        	else 
-        	{
-        		continue;	     
-        	}
-        }
-        if (flagCityOfBot == false)
-        {
-        	inOut.printData("РЇ РЅРµ Р·РЅР°СЋ Р±РѕР»СЊС€Рµ РіРѕСЂРѕРґРѕРІ РЅР° Р±СѓРєРІСѓ " + lastLetter + ". Р’С‹ РІС‹РёРіСЂР°Р»Рё!");
-        }
-	}
-	
 	public static void runPlayer(AccessoryTowns helper, int countPlayer, Random ran) 
 	{
 
@@ -66,20 +35,19 @@ public class Towns {
         {   
 			if (i == 0) 
             {
-				inOut.printData("РњРѕР№ С…РѕРґ: "); 
+				inOut.printData("Мой ход: "); 
             }
 			else
 			{
-				inOut.printData("РҐРѕРґРёС‚ "+ i + " РёРіСЂРѕРє. РЎР»РѕРІРѕ РЅР° Р±СѓРєРІСѓ: "  + lastLetter.toUpperCase() + "!");
+				inOut.printData("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter.toUpperCase() + "!");
 			}
-			
-               
+			           
             while(true) 
             {
             	String userTown;
             	if (i == 0) 
             	{
-            	    userTown = helper.getCityFromFile(ran, lastLetter.toLowerCase());
+            	    userTown = reader.nextTown(lastLetter);
             	    inOut.printData(userTown);
             	}
             	else 
@@ -89,27 +57,27 @@ public class Towns {
             	
         		if (userTown.trim().isEmpty())
         		{
-        			inOut.printData("Р§С‚Рѕ Р¶Рµ РІС‹ РЅРёС‡РµРіРѕ РЅРµ РІРІРµР»Рё?! Р“РѕРІРѕСЂРёС‚Рµ РіРѕСЂРѕРґ РЅР° Р±СѓРєРІСѓ: " + lastLetter.toUpperCase() + "!");
+        			inOut.printData("Что же вы ничего не ввели?! Говорите город на букву: " + lastLetter.toUpperCase() + "!");
         			continue;
         		}
         		userTown = userTown.toLowerCase();
         		if (Skeleton.help(userTown))
         		{
-        			inOut.printData("РџСЂРѕРґРѕР»Р¶Р°Р№");
+        			inOut.printData("Продолжай");
         			continue;        
         		}           	
 	            firstLetter = userTown.substring(0, 1);  	
 	            
 	            if (!lastLetter.equals(firstLetter))
                 {
-	            	inOut.printData("РўС‹ РёРіСЂР°РµС€СЊ РЅРµ РїРѕ РїСЂР°РІРёР»Р°Рј. РќР°Р·РѕРІРё РіРѕСЂРѕРґ РЅР° Р±СѓРєРІСѓ " + lastLetter.toUpperCase());
+	            	inOut.printData("Ты играешь не по правилам. Назови город на букву " + lastLetter.toUpperCase());
                  	continue;
                 }
 
-	            boolean isItACity = helper.checkCity(userTown, firstLetter.toLowerCase());	            
+	            boolean isItACity = helper.checkCity(reader, userTown, firstLetter.toLowerCase());	            
 	            if (!isItACity)
 	            {
-	            	inOut.printData("РќРµ Р¶СѓР»СЊРЅРёС‡Р°Р№! РўС‹ РЅР°Р·С‹РІР°РµС€СЊ РЅРµ РіРѕСЂРѕРґ:)))");
+	            	inOut.printData("Не жульничай! Ты называешь не город:)))");
                     continue;
 	            }
 	                
@@ -118,10 +86,10 @@ public class Towns {
 	            	lastLetter = userTown.substring(userTown.length() - 1, userTown.length());
 	            	lastLetter =  helper.check(lastLetter, userTown).toLowerCase();
              		break;
-	            }        		
+	            }          		
              	else 
              	{
-             		inOut.printData("РђР№-СЏР№-СЏР№! Р­С‚Рѕ СЃР»РѕРІРѕ СѓР¶Рµ Р±С‹Р»Рѕ РЅР°Р·РІР°РЅРѕ. РџРѕРїСЂРѕР±СѓР№ РµС‰Рµ СЂР°Р·!");                     
+             		inOut.printData("Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!");                     
              		continue;
              	} 
             }      
@@ -134,7 +102,7 @@ public class Towns {
 		int countPlayer = 1;
 		while (true) 
 		{
-			inOut.printData("РЎРєРѕР»СЊРєРѕ С‡РµР»РѕРІРµРє Р±СѓРґРµС‚ РёРіСЂР°С‚СЊ СЃРѕ РјРЅРѕР№?");	
+			inOut.printData("Сколько человек будет играть со мной?");	
 			try 
 			{
 		        countPlayer = Integer.valueOf(inOut.scanData());
@@ -142,7 +110,7 @@ public class Towns {
 		    }
 			catch (NumberFormatException e) 
 			{  
-		        inOut.printData("РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ СЃС‚СЂРѕРєРё! РџРѕРїСЂРѕР±СѓР№ РµС‰Рµ СЂР°Р·РѕРє.");  
+		        inOut.printData("Неверный формат строки! Попробуй еще разок.");  
 		    }
 		}
 		return countPlayer;

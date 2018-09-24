@@ -1,15 +1,12 @@
 package testing;
 
 import static org.junit.Assert.*;
-import  org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Random;
-
-
-
+import org.junit.jupiter.api.Test;
+import java.util.HashSet;
 import chatBot.Skeleton;
 import chatBot.AccessoryTowns;
+import chatBot.FileTownsReader;
+
 
 public class Tests 
 {
@@ -40,40 +37,22 @@ public class Tests
 	}
 	
 	@Test
-	public void testGetCityFromFile() 
-	{
-		AccessoryTowns accessoryTowns = new AccessoryTowns();
-		Random ran = new Random();
-		String check_input = accessoryTowns.getCityFromFile(ran, "я");
-		assertEquals(accessoryTowns.checkCity(check_input, "а"), false);
-		
-		check_input = accessoryTowns.getCityFromFile(ran, "ј");
-		assertEquals(accessoryTowns.checkCity(check_input, "а"), true);
-		
-		check_input = accessoryTowns.getCityFromFile(ran, "а");
-		assertEquals(accessoryTowns.checkCity(check_input, "а"), true);
-		
-		check_input = accessoryTowns.getCityFromFile(ran, "я");
-		assertEquals(accessoryTowns.checkCity(check_input, "€"), true);
-		
-	}
-	
-	@Test
 	public void testCheckCity() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
-		
-		assertEquals(accessoryTowns.checkCity("абаза", "а"), true);
-		assertEquals(accessoryTowns.checkCity("јбаза", "а"), true);
-		assertEquals(accessoryTowns.checkCity("јбјзј", "а"), true);
-		assertEquals(accessoryTowns.checkCity("вамрвашмт", "а"), false);
-		assertEquals(accessoryTowns.checkCity("авамрвашмт", "а"), false);
-		assertEquals(accessoryTowns.checkCity("aбаза", "а"), false);
+		FileTownsReader reader = new FileTownsReader();
+		reader.getTowns();
+		assertEquals(accessoryTowns.checkCity(reader, "абаза", "а"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "јбаза", "а"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "јбјзј", "а"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "вамрвашмт", "а"), false);
+		assertEquals(accessoryTowns.checkCity(reader, "авамрвашмт", "а"), false);
+		assertEquals(accessoryTowns.checkCity(reader, "aбаза", "а"), false);
 	}
 	
 	@Test
 	public void testCheckWordDictionary() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
-		ArrayList<String> usedCities = new ArrayList<String>();
+		HashSet<String> usedCities = new HashSet<String>();
 		
 		assertEquals(accessoryTowns.checkWordDictionary("абаза", usedCities), true);
 		assertEquals(accessoryTowns.checkWordDictionary("абаза", usedCities), false);
@@ -88,6 +67,6 @@ public class Tests
 		assertEquals(accessoryTowns.check("а", "абаза"), "а");
 		assertEquals(accessoryTowns.check("й", "грозный"), "н");
 		assertEquals(accessoryTowns.check("ь", "тверь"), "р");
-		assertEquals(accessoryTowns.check("ь", "тве–№"), "р");
+		assertEquals(accessoryTowns.check("ь", "тве–ь"), "р");
 	}
 }
