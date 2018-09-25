@@ -13,11 +13,12 @@ import java.util.Random;
 public class FileTownsReader implements TownsReader
 {
     public Map<String, ArrayList<String>> dictTowns = new HashMap<String, ArrayList<String>>();
+    private static InOut inOut = new InOut();
 	
 	public void getTowns()
 	{
 
-        String path = System.getProperty("user.dir") + "\\chatBot\\√ÓÓ‰‡\\";
+        String path = System.getProperty("user.dir") + "\\chatBot\\–ì–æ—Ä–æ–¥–∞\\";
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) 
@@ -41,7 +42,7 @@ public class FileTownsReader implements TownsReader
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		   System.out.println("Œ¯Ë·Í‡");
+		    		inOut.printData("–û—à–∏–±–∫–∞");
 		        }
 		    }
 		}
