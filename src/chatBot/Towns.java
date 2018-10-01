@@ -4,7 +4,8 @@ import java.util.Random;
 import java.util.HashSet;
 
 
-public class Towns {
+public class Towns 
+{
 	private static HashSet<String> usedCities = new HashSet<String>();
 	private static String firstLetter = "";
 	private static String lastLetter = "";
@@ -13,8 +14,7 @@ public class Towns {
 	private static FileTownsReader reader = new FileTownsReader();	
 	
 	public void gameOfCities()
-	{
-		
+	{		
 		reader.getTowns();
 		
 		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";		
@@ -34,7 +34,13 @@ public class Towns {
 
 		for (int i = 0; i <= countPlayer; i++) 
         {   
+			boolean botsTurn = false;
 			if (i == 0) 
+			{
+				botsTurn = true;
+			}
+			
+			if (botsTurn) 
             {
 				inOut.printData("Мой ход: "); 
             }
@@ -46,7 +52,7 @@ public class Towns {
             while(true) 
             {
             	String userTown;
-            	if (i == 0) 
+            	if (botsTurn) 
             	{
             	    userTown = reader.nextTown(lastLetter);
             	    inOut.printData(userTown);
@@ -82,10 +88,9 @@ public class Towns {
                     continue;
 	            }
 	                
-	            if ( helper.checkWordDictionary(userTown, usedCities))
+	            if (helper.checkWordDictionary(userTown, usedCities))
 	            {
-	            	lastLetter = userTown.substring(userTown.length() - 1, userTown.length());
-	            	lastLetter =  helper.check(lastLetter, userTown).toLowerCase();
+	            	lastLetter = helper.getLastSignificantLetter(userTown);
              		break;
 	            }          		
              	else 
@@ -98,8 +103,7 @@ public class Towns {
              		continue;
              	} 
             }      
-        }
-		
+        }		
 	}
 	
 	public int countPlayers() 
