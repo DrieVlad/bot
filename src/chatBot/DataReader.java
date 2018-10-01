@@ -3,5 +3,12 @@ package chatBot;
 public interface DataReader 
 {
     String scanData();
-    boolean checkData(String s_UserData);
+    default public boolean checkData(String userData) 
+	{
+		if (userData.equals("")) 
+		{
+			return true;
+		}
+		return false;
+	}
 }
