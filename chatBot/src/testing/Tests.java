@@ -18,19 +18,19 @@ public class Tests
 		assertEquals(check_help, true);
 		check_help = Skeleton.help("Help");
 		assertEquals(check_help, true);;
-		check_help = Skeleton.help("помоги");
+		check_help = Skeleton.help("РїРѕРјРѕРіРё");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("Помоги");
+		check_help = Skeleton.help("РџРѕРјРѕРіРё");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("помощь");
+		check_help = Skeleton.help("РїРѕРјРѕС‰СЊ");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("Помощь");
+		check_help = Skeleton.help("РџРѕРјРѕС‰СЊ");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("Расскажи о себе");
+		check_help = Skeleton.help("Р Р°СЃСЃРєР°Р¶Рё Рѕ СЃРµР±Рµ");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("расскажи о себе");
+		check_help = Skeleton.help("СЂР°СЃСЃРєР°Р¶Рё Рѕ СЃРµР±Рµ");
 		assertEquals(check_help, true);
-		check_help = Skeleton.help("ввапва");
+		check_help = Skeleton.help("РІРІР°РїРІР°");
 		assertEquals(check_help, false);
 		check_help = Skeleton.help("helpwef");
 		assertEquals(check_help, false);
@@ -41,12 +41,12 @@ public class Tests
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
 		FileTownsReader reader = new FileTownsReader();
 		reader.getTowns();
-		assertEquals(accessoryTowns.checkCity(reader, "абаза", "а"), true);
-		assertEquals(accessoryTowns.checkCity(reader, "Абаза", "а"), true);
-		assertEquals(accessoryTowns.checkCity(reader, "АбАзА", "а"), true);
-		assertEquals(accessoryTowns.checkCity(reader, "вамрвашмт", "а"), false);
-		assertEquals(accessoryTowns.checkCity(reader, "авамрвашмт", "а"), false);
-		assertEquals(accessoryTowns.checkCity(reader, "aбаза", "а"), false);
+		assertEquals(accessoryTowns.checkCity(reader, "Р°Р±Р°Р·Р°", "Р°"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "РђР±Р°Р·Р°", "Р°"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "РђР±РђР·Рђ", "Р°"), true);
+		assertEquals(accessoryTowns.checkCity(reader, "РІР°РјСЂРІР°С€РјС‚", "Р°"), false);
+		assertEquals(accessoryTowns.checkCity(reader, "Р°РІР°РјСЂРІР°С€РјС‚", "Р°"), false);
+		assertEquals(accessoryTowns.checkCity(reader, "aР±Р°Р·Р°", "Р°"), false);
 	}
 	
 	@Test
@@ -54,19 +54,19 @@ public class Tests
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
 		HashSet<String> usedCities = new HashSet<String>();
 		
-		assertEquals(accessoryTowns.checkWordDictionary("абаза", usedCities), true);
-		assertEquals(accessoryTowns.checkWordDictionary("абаза", usedCities), false);
-		assertEquals(accessoryTowns.checkWordDictionary("Абаза", usedCities), false);
-		assertEquals(accessoryTowns.checkWordDictionary("Абакан", usedCities), true);
+		assertEquals(accessoryTowns.checkWordDictionary("Р°Р±Р°Р·Р°", usedCities), true);
+		assertEquals(accessoryTowns.checkWordDictionary("Р°Р±Р°Р·Р°", usedCities), false);
+		assertEquals(accessoryTowns.checkWordDictionary("РђР±Р°Р·Р°", usedCities), false);
+		assertEquals(accessoryTowns.checkWordDictionary("РђР±Р°РєР°РЅ", usedCities), true);
 	}
 	
 	@Test
 	public void testCheck() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
 		
-		assertEquals(accessoryTowns.check("а", "абаза"), "а");
-		assertEquals(accessoryTowns.check("й", "грозный"), "н");
-		assertEquals(accessoryTowns.check("ь", "тверь"), "р");
-		assertEquals(accessoryTowns.check("ь", "твеРь"), "р");
+		assertEquals(accessoryTowns.check("Р°", "Р°Р±Р°Р·Р°"), "Р°");
+		assertEquals(accessoryTowns.check("Р№", "РіСЂРѕР·РЅС‹Р№"), "РЅ");
+		assertEquals(accessoryTowns.check("СЊ", "С‚РІРµСЂСЊ"), "СЂ");
+		assertEquals(accessoryTowns.check("СЊ", "С‚РІРµР СЊ"), "СЂ");
 	}
 }
