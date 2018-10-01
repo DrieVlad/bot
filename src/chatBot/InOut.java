@@ -8,14 +8,14 @@ public class InOut implements StringDataReader, StringDataWriter
 	public String readDataString() 
 	{		
 		String s_useResponse  = "";
-		while (checkData(s_useResponse)) 
+		while (checkDataString(s_useResponse)) 
 		{
 			s_useResponse = input.nextLine();
 		}
 		return s_useResponse;
 	}	
 	
-	public void writeData(String s_user) 
+	public void writeDataString(String s_user) 
 	{
 		System.out.println(s_user);
 	}

@@ -2,5 +2,5 @@ package chatBot;
 
 public interface StringDataWriter 
 {
-	void writeData(String s_user);
+	void writeDataString(String s_user);
 }

@@ -42,7 +42,7 @@ public class FileTownsReader implements TownsReader
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		inOut.writeData("Ошибка");
+		    		inOut.writeDataString("Ошибка");
 		        }
 		    }
 		}

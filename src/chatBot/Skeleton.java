@@ -68,7 +68,7 @@ public class Skeleton
     
 	public static void main(String[] args) 
 	{
-		inOut.writeData("Приветствую тебя, мой дорогой друг!\n");
+		inOut.writeDataString("Приветствую тебя, мой дорогой друг!\n");
 		help("help");
         start();
 	}
@@ -81,7 +81,7 @@ public class Skeleton
 		while (flagInterrupt) 
 		{	
 			String s_useResponse;
-			inOut.writeData(" Поиграем?");
+			inOut.writeDataString(" Поиграем?");
 			s_useResponse = inOut.readDataString();
 			s_useResponse = s_useResponse.toLowerCase();
 			help(s_useResponse);
@@ -91,8 +91,8 @@ public class Skeleton
 					|| s_useResponse.equals("давай")
 					|| s_useResponse.equals("погнали"))  
 			{				
-				inOut.writeData("Во что будем играть?");
-				inOut.writeData("У меня есть интересная игра в \"Города\"");
+				inOut.writeDataString("Во что будем играть?");
+				inOut.writeDataString("У меня есть интересная игра в \"Города\"");
 				Towns towns = new Towns();
 				towns.gameOfCities();
 			} 
@@ -101,15 +101,15 @@ public class Skeleton
 					|| s_useResponse.equals("давай дальше")) 
 			{
 				count = randomer1.nextInt(s_questions.length);				
-				inOut.writeData(s_questions[count]);
+				inOut.writeDataString(s_questions[count]);
 				s_useResponse = inOut.readDataString();
 				help(s_useResponse);
 				count = randomer1.nextInt(s_phrases.length);				
-				inOut.writeData(s_phrases[count] + " ");
+				inOut.writeDataString(s_phrases[count] + " ");
 			} 
 			else
 			{
-				inOut.writeData("Извините, я вас не понял:((");
+				inOut.writeDataString("Извините, я вас не понял:((");
 			}			
 		}		
 	}
@@ -122,7 +122,7 @@ public class Skeleton
 				|| s_Check.equals("помощь")
 				|| s_Check.equals("расскажи о себе")) 
 		{
-			inOut.writeData(s_aboutMe);
+			inOut.writeDataString(s_aboutMe);
 			return true;
 		}
 		return false;
