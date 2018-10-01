@@ -23,7 +23,8 @@ public class Towns
 		lastLetter = String.valueOf(alphabet.charAt(count));
 		int countPlayer = countPlayers();
 		
-		while(true)
+		boolean flagInterrupt = true;
+		while(flagInterrupt)
 		{             
 	            runPlayer(helper, countPlayer, ran);	            	                                         	      
 		}		
