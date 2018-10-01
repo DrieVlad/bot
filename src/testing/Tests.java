@@ -64,9 +64,9 @@ public class Tests
 	public void testCheck() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
 		
-		assertEquals(accessoryTowns.check("а", "абаза"), "а");
-		assertEquals(accessoryTowns.check("й", "грозный"), "н");
-		assertEquals(accessoryTowns.check("ь", "тверь"), "р");
-		assertEquals(accessoryTowns.check("ь", "твеРь"), "р");
+		assertEquals(accessoryTowns.getLastSignificantLetter("абаза"), "а");
+		assertEquals(accessoryTowns.getLastSignificantLetter("грозный"), "н");
+		assertEquals(accessoryTowns.getLastSignificantLetter("тверь"), "р");
+		assertEquals(accessoryTowns.getLastSignificantLetter("твеРь"), "р");
 	}
 }
