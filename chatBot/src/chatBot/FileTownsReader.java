@@ -18,7 +18,7 @@ public class FileTownsReader implements TownsReader
 	public void getTowns()
 	{
 
-        String path = System.getProperty("user.dir") + "\\chatBot\\–ì–æ—Ä–æ–¥–∞\\";
+        String path = System.getProperty("user.dir") + "\\chatBot\\√ÓÓ‰‡\\";
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) 
@@ -42,7 +42,7 @@ public class FileTownsReader implements TownsReader
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		inOut.printData("–û—à–∏–±–∫–∞");
+		    		inOut.printData("Œ¯Ë·Í‡");
 		        }
 		    }
 		}

@@ -17,7 +17,7 @@ public class Towns {
 		
 		reader.getTowns();
 		
-		String alphabet = "Р°Р±РІРіРґРµР¶Р·РёРєР»РјРЅРѕРїСЂСЃС‚СѓС„С…С†С‡С€С‰СЌСЋСЏ";		
+		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";		
 		Random ran = new Random();		
 		int count = ran.nextInt(alphabet.length());
 		lastLetter = String.valueOf(alphabet.charAt(count));
@@ -36,11 +36,11 @@ public class Towns {
         {   
 			if (i == 0) 
             {
-				inOut.printData("РњРѕР№ С…РѕРґ: "); 
+				inOut.printData("Мой ход: "); 
             }
 			else
 			{
-				inOut.printData("РҐРѕРґРёС‚ "+ i + " РёРіСЂРѕРє. РЎР»РѕРІРѕ РЅР° Р±СѓРєРІСѓ: "  + lastLetter.toUpperCase() + "!");
+				inOut.printData("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter.toUpperCase() + "!");
 			}
 			           
             while(true) 
@@ -58,27 +58,27 @@ public class Towns {
             	
         		if (userTown.trim().isEmpty())
         		{
-        			inOut.printData("Р§С‚Рѕ Р¶Рµ РІС‹ РЅРёС‡РµРіРѕ РЅРµ РІРІРµР»Рё?! Р“РѕРІРѕСЂРёС‚Рµ РіРѕСЂРѕРґ РЅР° Р±СѓРєРІСѓ: " + lastLetter.toUpperCase() + "!");
+        			inOut.printData("Что же вы ничего не ввели?! Говорите город на букву: " + lastLetter.toUpperCase() + "!");
         			continue;
         		}
         		userTown = userTown.toLowerCase();
         		if (Skeleton.help(userTown))
         		{
-        			inOut.printData("РџСЂРѕРґРѕР»Р¶Р°Р№");
+        			inOut.printData("Продолжай");
         			continue;        
         		}           	
 	            firstLetter = userTown.substring(0, 1);  	
 	            
 	            if (!lastLetter.equals(firstLetter))
                 {
-	            	inOut.printData("РўС‹ РёРіСЂР°РµС€СЊ РЅРµ РїРѕ РїСЂР°РІРёР»Р°Рј. РќР°Р·РѕРІРё РіРѕСЂРѕРґ РЅР° Р±СѓРєРІСѓ " + lastLetter.toUpperCase());
+	            	inOut.printData("Ты играешь не по правилам. Назови город на букву " + lastLetter.toUpperCase());
                  	continue;
                 }
 
 	            boolean isItACity = helper.checkCity(reader, userTown, firstLetter.toLowerCase());	            
 	            if (!isItACity)
 	            {
-	            	inOut.printData("РќРµ Р¶СѓР»СЊРЅРёС‡Р°Р№! РўС‹ РЅР°Р·С‹РІР°РµС€СЊ РЅРµ РіРѕСЂРѕРґ:)))");
+	            	inOut.printData("Не жульничай! Ты называешь не город:)))");
                     continue;
 	            }
 	                
@@ -94,7 +94,7 @@ public class Towns {
              		{
              			continue;
              		}
-             		inOut.printData("РђР№-СЏР№-СЏР№! Р­С‚Рѕ СЃР»РѕРІРѕ СѓР¶Рµ Р±С‹Р»Рѕ РЅР°Р·РІР°РЅРѕ. РџРѕРїСЂРѕР±СѓР№ РµС‰Рµ СЂР°Р·!");                     
+             		inOut.printData("Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!");                     
              		continue;
              	} 
             }      
@@ -107,7 +107,7 @@ public class Towns {
 		int countPlayer = 1;
 		while (true) 
 		{
-			inOut.printData("РЎРєРѕР»СЊРєРѕ С‡РµР»РѕРІРµРє Р±СѓРґРµС‚ РёРіСЂР°С‚СЊ СЃРѕ РјРЅРѕР№?");	
+			inOut.printData("Сколько человек будет играть со мной?");	
 			try 
 			{
 		        countPlayer = Integer.valueOf(inOut.scanData());
@@ -115,7 +115,7 @@ public class Towns {
 		    }
 			catch (NumberFormatException e) 
 			{  
-		        inOut.printData("РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ СЃС‚СЂРѕРєРё! РџРѕРїСЂРѕР±СѓР№ РµС‰Рµ СЂР°Р·РѕРє.");  
+		        inOut.printData("Неверный формат строки! Попробуй еще разок.");  
 		    }
 		}
 		return countPlayer;

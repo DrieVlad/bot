@@ -10,18 +10,22 @@ public class AccessoryTowns {
 	{
 		//Если город оканчивается на ьйыъё, то нужно вводить город на предпоследнюю букву
 		//Если город оканчивается на ый, то нужно вводить город на препредпоследнюю букву
-		if (line.substring(line.length() - 2, line.length()).equals("ый")) 
+		
+		
+		if (line.substring(line.length() - 2, line.length()).endsWith("ый") && line.length() > 2) 
 		{
 			lastLetter = line.substring(line.length() - 3, line.length() - 2);
 		}	
-		else if (lastLetter.equals("ь")
-				|| lastLetter.equals("й")
-				|| lastLetter.equals("ы")
-				|| lastLetter.equals("ъ")
-				|| lastLetter.equals("ё"))
+		else if ((lastLetter.endsWith("ь")
+				|| lastLetter.endsWith("й")
+				|| lastLetter.endsWith("ы")
+				|| lastLetter.endsWith("ъ")
+				|| lastLetter.endsWith("ё")) 
+				&& line.length() > 1)
 		{
         	lastLetter = line.substring(line.length() - 2, line.length() - 1);
 		}
+
 		return lastLetter.toLowerCase();
 	}
 	
