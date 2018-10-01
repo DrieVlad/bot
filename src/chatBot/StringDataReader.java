@@ -1,8 +1,8 @@
 package chatBot;
 
-public interface DataReader 
+public interface StringDataReader 
 {
-    String scanData();
+    String readDataString();
     default public boolean checkData(String userData) 
 	{
 		if (userData.equals("")) 

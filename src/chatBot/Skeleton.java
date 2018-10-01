@@ -68,7 +68,7 @@ public class Skeleton
     
 	public static void main(String[] args) 
 	{
-		inOut.printData("Приветствую тебя, мой дорогой друг!\n");
+		inOut.writeData("Приветствую тебя, мой дорогой друг!\n");
 		help("help");
         start();
 	}
@@ -77,11 +77,12 @@ public class Skeleton
 	{
 		int count;
 		Random randomer1 = new Random();
-		while (true) 
+		boolean flagInterrupt = true;
+		while (flagInterrupt) 
 		{	
 			String s_useResponse;
-			inOut.printData(" Поиграем?");
-			s_useResponse = inOut.scanData();
+			inOut.writeData(" Поиграем?");
+			s_useResponse = inOut.readDataString();
 			s_useResponse = s_useResponse.toLowerCase();
 			help(s_useResponse);
 			if (s_useResponse.equals("yes")
@@ -90,8 +91,8 @@ public class Skeleton
 					|| s_useResponse.equals("давай")
 					|| s_useResponse.equals("погнали"))  
 			{				
-				inOut.printData("Во что будем играть?");
-				inOut.printData("У меня есть интересная игра в \"Города\"");
+				inOut.writeData("Во что будем играть?");
+				inOut.writeData("У меня есть интересная игра в \"Города\"");
 				Towns towns = new Towns();
 				towns.gameOfCities();
 			} 
@@ -100,15 +101,15 @@ public class Skeleton
 					|| s_useResponse.equals("давай дальше")) 
 			{
 				count = randomer1.nextInt(s_questions.length);				
-				inOut.printData(s_questions[count]);
-				s_useResponse = inOut.scanData();
+				inOut.writeData(s_questions[count]);
+				s_useResponse = inOut.readDataString();
 				help(s_useResponse);
 				count = randomer1.nextInt(s_phrases.length);				
-				inOut.printData(s_phrases[count] + " ");
+				inOut.writeData(s_phrases[count] + " ");
 			} 
 			else
 			{
-				inOut.printData("Извините, я вас не понял:((");
+				inOut.writeData("Извините, я вас не понял:((");
 			}			
 		}		
 	}
@@ -121,7 +122,7 @@ public class Skeleton
 				|| s_Check.equals("помощь")
 				|| s_Check.equals("расскажи о себе")) 
 		{
-			inOut.printData(s_aboutMe);
+			inOut.writeData(s_aboutMe);
 			return true;
 		}
 		return false;

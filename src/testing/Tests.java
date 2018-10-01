@@ -63,6 +63,7 @@ public class Tests
 		}
 	}
 	
+	@Test
 	public void testCheck() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
 		

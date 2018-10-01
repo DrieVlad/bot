@@ -2,10 +2,10 @@ package chatBot;
 
 import java.util.Scanner;
 
-public class InOut implements DataReader, DataWriter
+public class InOut implements StringDataReader, StringDataWriter
 {
-	Scanner input = new Scanner(System.in);
-	public String scanData() 
+	final Scanner input = new Scanner(System.in);
+	public String readDataString() 
 	{		
 		String s_useResponse  = "";
 		while (checkData(s_useResponse)) 
@@ -15,7 +15,7 @@ public class InOut implements DataReader, DataWriter
 		return s_useResponse;
 	}	
 	
-	public void printData(String s_user) 
+	public void writeData(String s_user) 
 	{
 		System.out.println(s_user);
 	}
