@@ -13,7 +13,6 @@ import java.util.Random;
 public class FileTownsReader implements TownsReader
 {
     public Map<String, ArrayList<String>> dictTowns = new HashMap<String, ArrayList<String>>();
-    private static InOut inOut = new InOut();
 	
 	public void getTowns()
 	{
@@ -42,7 +41,7 @@ public class FileTownsReader implements TownsReader
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		inOut.writeDataString("Ошибка");
+		    		InOut.printer.writeDataString("Ошибка");
 		        }
 		    }
 		}

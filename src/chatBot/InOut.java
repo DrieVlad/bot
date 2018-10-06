@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class InOut implements StringDataReader, StringDataWriter
 {
-	final Scanner input = new Scanner(System.in);
+	public static final InOut printer = new InOut();
+	private static final Scanner input = new Scanner(System.in);
 	public String readDataString() 
 	{		
 		String s_useResponse  = "";
