@@ -16,7 +16,6 @@ public class FileTownsReader implements TownsReader
 	
 	public void getTowns()
 	{
-
         String path = System.getProperty("user.dir") + "\\chatBot\\Города\\";
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();

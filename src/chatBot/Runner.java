@@ -94,8 +94,9 @@ public class Runner {
 			    fsm.pushState(this::playTowns);
 			    break;
 		    case("2"):
-			    //
-			    break;
+		    	fsm.popState();
+		        fsm.pushState(this::playMillionaire);
+		        break;
 		    case("помощь"):
 			    //fsm.popState();
 			    fsm.pushState(this::printHelp);
@@ -121,6 +122,13 @@ public class Runner {
 		Towns towns = new Towns();
 		//towns.flagInterrupt = true;
 	    towns.gameOfCities();
+	}
+	
+	public void playMillionaire()
+	{		
+		Millionaire mill = new Millionaire();
+		//towns.flagInterrupt = true;
+	    mill.game();
 	}
 	
 	public void whatsNext()
