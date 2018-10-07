@@ -38,8 +38,8 @@ public class Towns
         label: for (int i = 0; i <= countPlayer; i++) 
         {   
 			
-			boolean botsTurn = false;
-			if (i == 0) 
+        	boolean botsTurn = (i == 0);
+			if (botsTurn) 
 			{
 				botsTurn = true;
 			}

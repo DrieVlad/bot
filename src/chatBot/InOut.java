@@ -9,7 +9,7 @@ public class InOut implements StringDataReader, StringDataWriter
 	public String readDataString() 
 	{		
 		String s_useResponse  = "";
-		while (checkDataString(s_useResponse)) 
+		while (CheckUserDataString.checkDataString(s_useResponse)) 
 		{
 			s_useResponse = input.nextLine();
 		}
