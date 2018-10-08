@@ -27,7 +27,7 @@ public class FileMillionaireReader
 		    	try
 		    	{
 		    	   String fileName = file.getName();
-		    	   String nemberLevel = String.valueOf(fileName.charAt(0));
+		    	   String nemberLevel = String.valueOf(fileName.substring(0, fileName.indexOf('.')));
 		    	   FileInputStream fstream = new FileInputStream(path + fileName);
 		    	   BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		    	   String strLine;
