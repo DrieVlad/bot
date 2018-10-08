@@ -5,20 +5,21 @@ import java.util.ArrayList;
 
 @FunctionalInterface
 interface CurrentState {
-	public void run();
+	public String run(String userInput);
 }
 
 public class FSMStack {
 	private ArrayList<CurrentState> stack = new ArrayList<CurrentState>();
 
-	public void update()
+	public String update(String userInput)
 	{
 		CurrentState currentStateFunction = getCurrentState();
-	 
+	    String botResponse = "";
         if (currentStateFunction != null) 
         {
-            currentStateFunction.run();
+        	botResponse = currentStateFunction.run(userInput);
         }
+        return botResponse;
 	}
 	public CurrentState popState() {
 		CurrentState state = stack.get(stack.size() - 1);
@@ -31,6 +32,11 @@ public class FSMStack {
 		{
             stack.add(state);
 		}
+	}
+	
+	public void stackReboot() {
+		stack.clear();
+		this.pushState(ConsoleEntryPoint.bot::start);
 	}
 	
 	public CurrentState getCurrentState()

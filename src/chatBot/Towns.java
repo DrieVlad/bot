@@ -21,15 +21,15 @@ public class Towns
 		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";					
 		int count = ran.nextInt(alphabet.length());
 		lastLetter = String.valueOf(alphabet.charAt(count));
-		Bot.bot.fsm.popState();
-		Bot.bot.fsm.pushState(this::countPlayers);
-		Bot.bot.fsm.update();
+		ConsoleEntryPoint.bot.fsm.popState();
+		ConsoleEntryPoint.bot.fsm.pushState(this::countPlayers);
+		ConsoleEntryPoint.bot.fsm.update();
 		
         while(flagInterrupt)
 		{       
-			    Bot.bot.fsm.popState();
-			    Bot.bot.fsm.pushState(this::runPlayer);
-			    Bot.bot.fsm.update();
+			    ConsoleEntryPoint.bot.fsm.popState();
+			    ConsoleEntryPoint.bot.fsm.pushState(this::runPlayer);
+			    ConsoleEntryPoint.bot.fsm.update();
 		}		
 	}	
 		
@@ -75,25 +75,25 @@ public class Towns
         		userTown = userTown.toLowerCase();
         		if (userTown.equals("помощь"))
         		{
-                    Bot.bot.fsm.pushState(Bot.bot::printHelp);
-        			Bot.bot.fsm.update();
+                    ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::printHelp);
+        			ConsoleEntryPoint.bot.fsm.update();
                     InOut.printer.writeDataString("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter.toUpperCase() + "!");
         			continue;        
         		}
         		if (userTown.equals("устал"))
         		{
-                    Bot.bot.fsm.popState();
-        			Bot.bot.fsm.pushState(Bot.bot::choiseGame);      			
-        			Bot.bot.fsm.update();
+                    ConsoleEntryPoint.bot.fsm.popState();
+        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::choiseGame);      			
+        			ConsoleEntryPoint.bot.fsm.update();
         			this.flagInterrupt = false;
         			break label;
         			
                 }
         		if (userTown.equals("пока"))
         		{
-                    Bot.bot.fsm.popState();
-        			Bot.bot.fsm.pushState(Bot.bot::sayGoodbye);      			
-        			Bot.bot.fsm.update();
+                    ConsoleEntryPoint.bot.fsm.popState();
+        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::sayGoodbye);      			
+        			ConsoleEntryPoint.bot.fsm.update();
         			this.flagInterrupt = false;
         			break label;
         		}
@@ -142,9 +142,9 @@ public class Towns
 				String userInput = InOut.printer.readDataString();
 				if (userInput.equals("помощь"))
         		{
-        			Bot.bot.fsm.popState();
-        			Bot.bot.fsm.pushState(Bot.bot::printHelp);
-        			Bot.bot.fsm.update();
+        			ConsoleEntryPoint.bot.fsm.popState();
+        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::printHelp);
+        			ConsoleEntryPoint.bot.fsm.update();
         			continue;
         		}
 				else
