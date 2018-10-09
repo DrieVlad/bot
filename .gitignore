@@ -14,5 +14,10 @@
 /**/InOut.class
 /**/TownsReader.class
 /**/.settings/
+/**/AskMillionaire.class
+/**/FileMillionaireReader.class
+/**/ConsoleEntryPoint.class
+/**/CheckUserDataString.class
+
 /bin/
 

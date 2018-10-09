@@ -4,10 +4,11 @@ import java.util.Random;
 
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
-	public final PhrasesBot phrases = new PhrasesBot();
-	String userInput = "";
+	private final PhrasesBot phrases = new PhrasesBot();
+	private Towns towns;
 
-	Bot() {
+	Bot() 
+	{
 		fsm.pushState(this::start);
 	}
 	
@@ -17,12 +18,11 @@ public class Bot {
 		return "Приветствую тебя, мой дорогой друг!\n" + phrases.s_aboutMe;
 	}
 
-	public String launch(String userInput) {
+	private String launch(String userInput) {
 		switch (userInput) {
 		case ("игра"):
 			fsm.popState();
 		    fsm.pushState(this::twoGame);
-			//botAnswer = choiseGame(userInput);
 			return "У меня есть две игры на выбор: \"Города\" и \"Миллионер\". \n"
 					+ "Пиши \"1\", если хочешь сыграть в \"Города\" " + "и \"2\", если хочешь сыграть в \"Миллионер\". \n"
 					+ "Во что будем играть? ";
@@ -37,12 +37,12 @@ public class Bot {
 		default:
 			fsm.popState();
 			fsm.pushState(this::launch);
-			return "Извините, я вас не понял:((";		
+			return "Извините, я вас не понял :((";		
 		}
 	}
 
-	public String dialogueQuestion(String userInput)
-	{
+	private String dialogueQuestion(String userInput)
+	{		
 		int count1;
 		int count2;
 		Random randomer = new Random();
@@ -51,14 +51,13 @@ public class Bot {
 		return PhrasesBot.s_phrases[count2] + " " + PhrasesBot.s_questions[count1];		
 	}
 		
-	public String twoGame(String userInput) {
+	private String twoGame(String userInput) {
 		switch (userInput) {
 		case ("1"):
 			fsm.popState();
 			fsm.pushState(this::playTowns);
-			Towns towns = new Towns();
-			towns.gameOfCities();
-			return "Хороший выбор! Введи кол-во игроков!";
+			towns = new Towns();
+			return "Хороший выбор! Введите количество игроков!";
 		case ("2"):
 			fsm.popState();
 			fsm.pushState(this::playMillionaire);
@@ -68,27 +67,21 @@ public class Bot {
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
-			return "Извините, я вас не понял:((";
+			return "Извините, я вас не понял :((";
 		}
 	}
 
-	public String playTowns(String userInput) {
-		Towns towns = new Towns();
-		// towns.flagInterrupt = true;
-		towns.gameOfCities();
-		return "города";
+	private String playTowns(String userInput) {		
+		return towns.game(userInput);
 	}
 
-	public String playMillionaire(String userInput) {
+	private String playMillionaire(String userInput) {
 		Millionaire mill = new Millionaire();
-		// towns.flagInterrupt = true;
 		mill.game();
 		return "миллионер";
 	}
 
 	public String update(String userInput) {
-		String botResponse = "";
-		botResponse = fsm.update(userInput);
-		return botResponse;
+		return fsm.update(userInput);
 	}
 }

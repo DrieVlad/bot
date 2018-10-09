@@ -10,24 +10,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class FileTownsReader implements TownsReader
+public class FileTownsReader
 {
-    public Map<String, ArrayList<String>> dictTowns = new HashMap<String, ArrayList<String>>();
+	public Map<String, ArrayList<String>> dictContentForGames = new HashMap<String, ArrayList<String>>();
 	
-	public void getTowns()
+	FileTownsReader(String folderName)
 	{
-        String path = System.getProperty("user.dir") + "\\chatBot\\Города\\";
+        String path = System.getProperty("user.dir") + "\\chatBot\\" + folderName + "\\";
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) 
 		{
 		    if (file.isFile()) 
 		    {
-		    	try
-		    	{
-		    	   String fileName = file.getName();
-		    	   String letter = String.valueOf(fileName.substring(0, fileName.indexOf('.')));
-		    	   FileInputStream fstream = new FileInputStream(path + fileName);
+		    	String fileName = file.getName();
+		    	String letter = String.valueOf(fileName.substring(0, fileName.indexOf('.')));
+		    	try(FileInputStream fstream = new FileInputStream(path + fileName))
+		    	{		    	 
 		    	   BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		    	   String strLine;
 		    	   ArrayList<String> towns = new ArrayList<String>();
@@ -35,22 +34,22 @@ public class FileTownsReader implements TownsReader
 		    	   {
 		    		   towns.add(strLine);			    		   
 		    	   }
-		    	   dictTowns.put(letter, towns);
+		    	   dictContentForGames.put(letter, towns);	
 		    	   br.close();
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		InOut.printer.writeDataString("Ошибка");
+		    		System.out.println("Ошибка");
 		        }
 		    }
 		}
 	}
 	
 	public String nextTown(String lastLetter)
-	{
+	{		
 		Random ran = new Random();
 		lastLetter = lastLetter.toLowerCase();
-		ArrayList<String> allTownsOnLetter = dictTowns.get(lastLetter);
+		ArrayList<String> allTownsOnLetter = dictContentForGames.get(lastLetter);
 		int linesCount = (int)allTownsOnLetter.size();		
 	    int count = ran.nextInt(linesCount);
 	    String town = allTownsOnLetter.get(count);

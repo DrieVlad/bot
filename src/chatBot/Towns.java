@@ -6,158 +6,93 @@ import java.util.HashSet;
 
 public class Towns 
 {
-	private static HashSet<String> usedCities = new HashSet<String>();
+	private  HashSet<String> usedCities = new HashSet<String>();
 	private static String firstLetter = "";
 	private static String lastLetter = "";
 	private static AccessoryTowns helper = new AccessoryTowns();
-	private static FileTownsReader reader = new FileTownsReader();	
+	private static FileTownsReader reader = new FileTownsReader("Города");	
 	private Random ran = new Random();	
-	private static int countPlayer = 1;
-	public boolean flagInterrupt = true;
+	private static int countPlayer;
+    private static int playerNumber;
+	private boolean turnBot = true;
+	private boolean turnPlayer = false;
+	private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";	
 	
-	public void gameOfCities()
-	{		
-		reader.getTowns();		
-		String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";					
-		int count = ran.nextInt(alphabet.length());
-		lastLetter = String.valueOf(alphabet.charAt(count));
-		ConsoleEntryPoint.bot.fsm.popState();
-		ConsoleEntryPoint.bot.fsm.pushState(this::countPlayers);
-		ConsoleEntryPoint.bot.fsm.update();
-		
-        while(flagInterrupt)
-		{       
-			    ConsoleEntryPoint.bot.fsm.popState();
-			    ConsoleEntryPoint.bot.fsm.pushState(this::runPlayer);
-			    ConsoleEntryPoint.bot.fsm.update();
-		}		
-	}	
-		
-	public void runPlayer() 
-	{
-        label: for (int i = 0; i <= countPlayer; i++) 
-        {   
-			
-        	boolean botsTurn = (i == 0);
-			if (botsTurn) 
-			{
-				botsTurn = true;
-			}
-			
-			if (botsTurn) 
-            {
-				InOut.printer.writeDataString("Мой ход: "); 
-            }
-			else
-			{
-				InOut.printer.writeDataString("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter.toUpperCase() + "!");
-			}
-			        
-			boolean flagInterrupt = true;
-            while(flagInterrupt) 
-            {
-            	String userTown;
-            	if (botsTurn) 
-            	{
-            	    userTown = reader.nextTown(lastLetter);
-            	    InOut.printer.writeDataString(userTown);
-            	}
-            	else 
-            	{
-            		userTown = InOut.printer.readDataString();
-            	}
-            	
-        		if (userTown.trim().isEmpty())
-        		{
-        			InOut.printer.writeDataString("Что же вы ничего не ввели?! Говорите город на букву: " + lastLetter.toUpperCase() + "!");
-        			continue;
-        		}
-        		userTown = userTown.toLowerCase();
-        		if (userTown.equals("помощь"))
-        		{
-                    ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::printHelp);
-        			ConsoleEntryPoint.bot.fsm.update();
-                    InOut.printer.writeDataString("Ходит "+ i + " игрок. Слово на букву: "  + lastLetter.toUpperCase() + "!");
-        			continue;        
-        		}
-        		if (userTown.equals("устал"))
-        		{
-                    ConsoleEntryPoint.bot.fsm.popState();
-        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::choiseGame);      			
-        			ConsoleEntryPoint.bot.fsm.update();
-        			this.flagInterrupt = false;
-        			break label;
-        			
-                }
-        		if (userTown.equals("пока"))
-        		{
-                    ConsoleEntryPoint.bot.fsm.popState();
-        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::sayGoodbye);      			
-        			ConsoleEntryPoint.bot.fsm.update();
-        			this.flagInterrupt = false;
-        			break label;
-        		}
-	            firstLetter = userTown.substring(0, 1);  	
-	            
-	            if (!lastLetter.equals(firstLetter))
-                {
-	            	InOut.printer.writeDataString("Ты играешь не по правилам. Назови город на букву " + lastLetter.toUpperCase());
-                 	continue;
-                }
-
-	            boolean isItACity = helper.checkCity(reader, userTown, firstLetter.toLowerCase());	            
-	            if (!isItACity)
-	            {
-	            	InOut.printer.writeDataString("Не жульничай! Ты называешь не город:)))");
-                    continue;
-	            }
-	                
-	            if (helper.checkWordDictionary(userTown, usedCities))
-	            {
-	            	lastLetter = helper.getLastSignificantLetter(userTown);
-	            	flagInterrupt = false;
-	            	continue;
-	            }          		
-             	else 
-             	{
-             		if (i == 0)
-             		{
-             			continue;
-             		}
-             		InOut.printer.writeDataString("Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!");                     
-             		continue;
-             	} 
-            }
-        }		
+	Towns(){
+		countPlayer = 0;
+		playerNumber = 1;		
 	}
-	
-	public void countPlayers() 
+	public String game(String userInput)
 	{		
-		boolean flagInterrupt = true;
-		while (flagInterrupt) 
+		if (countPlayer == 0)
 		{
-			InOut.printer.writeDataString("Сколько человек будет играть со мной?");	
-			try 
-			{
-				String userInput = InOut.printer.readDataString();
-				if (userInput.equals("помощь"))
-        		{
-        			ConsoleEntryPoint.bot.fsm.popState();
-        			ConsoleEntryPoint.bot.fsm.pushState(ConsoleEntryPoint.bot::printHelp);
-        			ConsoleEntryPoint.bot.fsm.update();
-        			continue;
-        		}
-				else
-				{
-					countPlayer = Integer.valueOf(userInput);
-		            flagInterrupt = false;
-		            continue;
-				}		        
-		    }
-			catch (NumberFormatException e) 
-			{  
-		        InOut.printer.writeDataString("Неверный формат строки! Попробуй еще разок.");  
-		    }
+		    try 
+		    {
+			    countPlayer = Integer.valueOf(userInput);	
+	        }
+		    catch (NumberFormatException e) 
+		    {  
+	            return "Неверный формат строки! Попробуй еще разок.";  
+	        }
+		}		
+		if (turnBot)
+		{							
+			int count = ran.nextInt(alphabet.length());
+			lastLetter = String.valueOf(alphabet.charAt(count));
+			return runBot();
+		}			            
+		if (turnPlayer)
+		{
+		    return runPlayer(userInput);
 		}
+		return "";
+	}	
+	
+	public String runBot()
+	{		
+		String botTown = reader.nextTown(lastLetter);
+		if (turnBot == true)
+		{
+			turnBot = false;
+		    turnPlayer = true;
+		}
+		lastLetter = helper.getLastSignificantLetter(botTown);
+	    return "Мой ход: " + botTown + "\n" + "Ходит 1 игрок. Слово на букву: " + lastLetter.toUpperCase() + "!";				
 	}
+	
+	public String runPlayer(String userInput)
+	{		
+		if (userInput.trim().isEmpty())
+		{
+			return "Что же вы ничего не ввели?! Говорите город на букву: " + lastLetter.toUpperCase() + "!";			
+		}
+		userInput = userInput.toLowerCase();       		
+        firstLetter = userInput.substring(0, 1);  	
+        if (!lastLetter.equals(firstLetter))
+        {
+        	return "Ты играешь не по правилам. Назови город на букву " + lastLetter.toUpperCase() + "!";        	
+        }
+        boolean isItACity = helper.checkCity(reader, userInput, firstLetter.toLowerCase());	            
+        if (!isItACity)
+        {
+        	return "Не жульничай! Ты называешь не город :)))";
+        }
+            
+        if (helper.checkWordDictionary(userInput, usedCities))
+        {
+        	lastLetter = helper.getLastSignificantLetter(userInput);
+        } 
+        else
+        	return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";
+        if (countPlayer == 1 || playerNumber == countPlayer)
+        {
+        	playerNumber = 1;
+        	return runBot();
+        }
+        else
+        {
+        	playerNumber += 1;
+        	return "Ходит "+ playerNumber + " игрок. Слово на букву: " + lastLetter.toUpperCase() + "!";
+        }			
+	}	
 }
