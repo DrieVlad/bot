@@ -12,7 +12,7 @@ public class Towns
 	private static AccessoryTowns helper = new AccessoryTowns();
 	private static FileTownsReader reader = new FileTownsReader("Города");	
 	private Random ran = new Random();	
-	private static int countPlayer;
+    private static int countPlayer;
     private static int playerNumber;
 	private boolean turnBot = true;
 	private boolean turnPlayer = false;

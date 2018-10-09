@@ -1,23 +1,2 @@
-/**/Tests.class
-/**/module-info.class
-/**/Millionaire.class
-/**/Runner.class
-/**/Bot.class
-/**/Towns.class
-/**/AccessoryTowns.class
-/**/CurrentState.class
-/**/FSMStack.class
-/**/StringDataReader.class
-/**/PhrasesBot.class
-/**/StringDataWriter.class
-/**/FileTownsReader.class
-/**/InOut.class
-/**/TownsReader.class
-/**/.settings/
-/**/AskMillionaire.class
-/**/FileMillionaireReader.class
-/**/ConsoleEntryPoint.class
-/**/CheckUserDataString.class
-
 /bin/
 
