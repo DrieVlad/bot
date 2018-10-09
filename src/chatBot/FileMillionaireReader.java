@@ -12,12 +12,12 @@ import java.util.Random;
 
 public class FileMillionaireReader 
 {
-	public Map<String, ArrayList<String>> dictTowns = new HashMap<String, ArrayList<String>>();
+	public final Map<String, ArrayList<String>> dictTowns = new HashMap<String, ArrayList<String>>();
 	
-	public void getAsk()
+	
+	FileMillionaireReader()
 	{
-
-        String path = System.getProperty("user.dir") + "\\chatBot\\Вопросы Миллионер\\";
+		String path = System.getProperty("user.dir") + "\\chatBot\\Вопросы Миллионер\\";
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) 

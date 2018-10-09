@@ -6,6 +6,7 @@ public class Bot {
 	public final FSMStack fsm = new FSMStack();
 	private final PhrasesBot phrases = new PhrasesBot();
 	private Towns towns;
+	private Millionaire mill;
 
 	Bot() 
 	{
@@ -60,10 +61,9 @@ public class Bot {
 			return "Хороший выбор! Введите количество игроков!";
 		case ("2"):
 			fsm.popState();
-			fsm.pushState(this::playMillionaire);
-			Millionaire mill = new Millionaire();
-			mill.game();
-			return "Хороший выбор! Стартовая фраза!";
+		    fsm.pushState(this::playMillionaire);
+            mill = new Millionaire();
+		    return "Хороший выбор! Стартовая фраза!";
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
@@ -75,10 +75,8 @@ public class Bot {
 		return towns.game(userInput);
 	}
 
-	private String playMillionaire(String userInput) {
-		Millionaire mill = new Millionaire();
-		mill.game();
-		return "миллионер";
+	public String playMillionaire(String userInput) {
+		return mill.game(userInput);
 	}
 
 	public String update(String userInput) {

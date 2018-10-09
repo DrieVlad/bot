@@ -2,38 +2,59 @@ package chatBot;
 
 public class Millionaire
 {
-	FileMillionaireReader helper = new FileMillionaireReader();
-			
-	public void game()
+	FileMillionaireReader reader = new FileMillionaireReader();
+	private int level;
+	AskMillionaire ask;
+	
+	
+	Millionaire()
 	{
-		helper.getAsk();
-		String userInput;
-		int level = 1;
-		while (level < 12)
+		level = 1;
+	}
+			
+	public String game(String userInput)
+	{
+		String botAnswer = "";
+		botAnswer = "Вопрос " + level + "\n"; 
+		
+		if (level == 1) 
 		{
-			InOut.printer.writeDataString("Вопрос " + level); 
-			AskMillionaire ask = helper.nextAsk(level);
-			ask.PrintAsk();
-			userInput = InOut.printer.readDataString();
-			if (ask.checkAsk(Integer.parseInt(userInput))) 
+			ask = reader.nextAsk(level);
+			botAnswer = ask.stringAsk();
+			level++;
+			return botAnswer;
+		}
+		else
+		{
+		    return next(userInput);
+		}
+		
+	}
+	
+	public String next(String userInput) 
+	{
+		String botAnswer = "";
+		if (ask.checkAsk(Integer.parseInt(userInput))) 
+		{
+			level++;
+			ask = reader.nextAsk(level);
+			botAnswer = ask.stringAsk();
+			return("Молодец, ты выиграл " + 100 * (level - 1) + " очков внимание, следующий вопрос!\n" + botAnswer);
+			
+		}
+		else 
+		{
+			if ((level - 1) / 3 != 0) 
 			{
-				InOut.printer.writeDataString("Молодец, ты выиграл " + 100*level + " очков внимание, следующий вопрос!");
+				int point;
+				point = ((level - 1) / 3) * 3 * 100;
 				level++;
+				return("Вы выиграли  " + point + " очков, в следующй раз поулчится лучше!");
 			}
 			else 
 			{
-				if ((level - 1) / 3 != 0) 
-				{
-					int point;
-					point = ((level - 1) / 3) * 3 * 100;
-					InOut.printer.writeDataString("Вы выиграли  " + point + " очков, в следующй раз поулчится лучше!");
-					break;
-				}
-				else 
-				{
-					InOut.printer.writeDataString("Вы ничего не выиграли, попробуйте еще раз!");
-					break;
-				}
+				level++;
+				return("Вы ничего не выиграли, попробуйте еще раз!");
 			}
 		}
 	}

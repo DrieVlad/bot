@@ -20,14 +20,16 @@ public class AskMillionaire
 			
 		}
 	}
-    public void PrintAsk()
+    public String stringAsk()
     {
-    	InOut.printer.writeDataString(question); 
+    	String ask = "";
+    	ask = question; 
     	for (int i = 0; i < 4; i++) 
     	{
     		int k = i + 1;
-    		InOut.printer.writeDataString(k + " вариант ответа: " + answers[i]); 
+    		ask = String.join(" ",ask + "\n" + k + " вариант ответа: " + answers[i] + "\n"); 
     	}
+    	return ask;
     }
     public boolean checkAsk(int answerUser)
     {
