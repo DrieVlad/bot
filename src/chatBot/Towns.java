@@ -10,7 +10,7 @@ public class Towns
 	private static String firstLetter = "";
 	private static String lastLetter = "";
 	private static AccessoryTowns helper = new AccessoryTowns();
-	private static FileTownsReader reader = new FileTownsReader("Города");	
+	private static TownsContent reader = new TownsContent("Города");	
 	private Random ran = new Random();	
     private static int countPlayer;
     private static int playerNumber;
@@ -48,7 +48,7 @@ public class Towns
 		return "";
 	}	
 	
-	public String runBot()
+	private String runBot()
 	{		
 		String botTown = reader.nextTown(lastLetter);
 		if (turnBot == true)
@@ -60,7 +60,7 @@ public class Towns
 	    return "Мой ход: " + botTown + "\n" + "Ходит 1 игрок. Слово на букву: " + lastLetter.toUpperCase() + "!";				
 	}
 	
-	public String runPlayer(String userInput)
+	private String runPlayer(String userInput)
 	{		
 		if (userInput.trim().isEmpty())
 		{

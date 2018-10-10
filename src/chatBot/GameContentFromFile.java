@@ -5,16 +5,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.Map;
 
-public class FileTownsReader
-{
-	public Map<String, ArrayList<String>> dictContentForGames = new HashMap<String, ArrayList<String>>();
+
+public class GameContentFromFile {
 	
-	FileTownsReader(String folderName)
+    public Map<String, ArrayList<String>> dictContentForGames = new HashMap<String, ArrayList<String>>();
+	
+    GameContentFromFile(String folderName)
 	{
         String path = System.getProperty("user.dir") + "\\chatBot\\" + folderName + "\\";
 		File folder = new File(path);
@@ -26,7 +26,8 @@ public class FileTownsReader
 		    	String fileName = file.getName();
 		    	String letter = String.valueOf(fileName.substring(0, fileName.indexOf('.')));
 		    	try(FileInputStream fstream = new FileInputStream(path + fileName))
-		    	{		    	 
+		    	{	
+		    	
 		    	   BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		    	   String strLine;
 		    	   ArrayList<String> towns = new ArrayList<String>();
@@ -43,16 +44,5 @@ public class FileTownsReader
 		        }
 		    }
 		}
-	}
-	
-	public String nextTown(String lastLetter)
-	{		
-		Random ran = new Random();
-		lastLetter = lastLetter.toLowerCase();
-		ArrayList<String> allTownsOnLetter = dictContentForGames.get(lastLetter);
-		int linesCount = (int)allTownsOnLetter.size();		
-	    int count = ran.nextInt(linesCount);
-	    String town = allTownsOnLetter.get(count);
-	    return town;
-	}
+	}     
 }

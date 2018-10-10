@@ -2,10 +2,9 @@ package chatBot;
 
 public class Millionaire
 {
-	FileMillionaireReader reader = new FileMillionaireReader();
+	MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
 	private int level;
 	AskMillionaire ask;
-	
 	
 	Millionaire()
 	{
@@ -31,7 +30,7 @@ public class Millionaire
 		
 	}
 	
-	public String next(String userInput) 
+	private String next(String userInput) 
 	{
 		String botAnswer = "";
 		if (ask.checkAsk(Integer.parseInt(userInput))) 
@@ -39,8 +38,7 @@ public class Millionaire
 			level++;
 			ask = reader.nextAsk(level);
 			botAnswer = ask.stringAsk();
-			return("Молодец, ты выиграл " + 100 * (level - 1) + " очков внимание, следующий вопрос!\n" + botAnswer);
-			
+			return("Молодец, ты выиграл " + 100 * (level - 1) + " очков внимание, следующий вопрос!\n" + botAnswer);			
 		}
 		else 
 		{
@@ -58,5 +56,4 @@ public class Millionaire
 			}
 		}
 	}
-
 }

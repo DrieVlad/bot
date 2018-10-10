@@ -2,9 +2,9 @@ package chatBot;
 
 import java.util.Random;
 
+
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
-	private final PhrasesBot phrases = new PhrasesBot();
 	private Towns towns;
 	private Millionaire mill;
 
@@ -16,7 +16,7 @@ public class Bot {
 	public String start(String userInput) {
 		fsm.popState();
 		fsm.pushState(this::launch);
-		return "Приветствую тебя, мой дорогой друг!\n" + phrases.s_aboutMe;
+		return "Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe;
 	}
 
 	private String launch(String userInput) {
@@ -63,7 +63,7 @@ public class Bot {
 			fsm.popState();
 		    fsm.pushState(this::playMillionaire);
             mill = new Millionaire();
-		    return "Хороший выбор! Стартовая фраза!";
+		    return "Хороший выбор! Введи \"старт\", чтобы начать игру!";
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);

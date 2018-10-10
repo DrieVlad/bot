@@ -5,14 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import chatBot.AccessoryTowns;
-import chatBot.FileTownsReader;
+import chatBot.TownsContent;
 
 public class Tests 
 {
 	@Test
 	public void testCheckCity() {
 		AccessoryTowns accessoryTowns = new AccessoryTowns();
-		FileTownsReader reader = new FileTownsReader();
+		TownsContent reader = new TownsContent();
 		reader.getTowns();
 		String[] keywordsTrue = {"абаза", "Абаза", "АбАзА"};
 		String[] keywordsFalse = {"вамрвашмт", "авамрвашмт", "aбаза"};

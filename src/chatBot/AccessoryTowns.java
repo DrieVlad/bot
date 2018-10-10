@@ -7,11 +7,9 @@ public class AccessoryTowns {
 	
 	public String getLastSignificantLetter(String line)
 	{
-		//Если город оканчивается на ьйыъё, то нужно вводить город на предпоследнюю букву
-		//Если город оканчивается на ый, то нужно вводить город на препредпоследнюю букву
 		int index = line.length() - 1;
 		String lastLetter = "";
-		String forbiddenLetters = "ьыйъё";
+		String forbiddenLetters = "ыйьъё";
 		while (lastLetter.equals(""))
 		{
 			lastLetter = String.valueOf(line.charAt(index));
@@ -24,9 +22,8 @@ public class AccessoryTowns {
 		return lastLetter.toLowerCase();
 	}
 		
-	public boolean checkCity(FileTownsReader reader, String userCity, String firstLetter)
-	{
-		//Этот метод проверяет то, что вводимая пользователем строка является городом.
+	public boolean checkCity(TownsContent reader, String userCity, String firstLetter)
+	{		
 		userCity = userCity.toLowerCase();
 		HashSet <String> allTownsOnLetter = new HashSet<String>(reader.dictContentForGames.get(firstLetter));
 		for (String town : allTownsOnLetter)
@@ -41,7 +38,6 @@ public class AccessoryTowns {
 
 	public Boolean checkWordDictionary(String city, HashSet<String> usedCities)
 	{
-		//Проверка на то, что город не повторяется. 
 		city = city.toLowerCase();
 		if (!usedCities.contains(city))
      	{  	            	
