@@ -26,7 +26,7 @@ public class Millionaire
 			if (!userInput.equals("да"))
 			{
 				ConsoleEntryPoint.bot.fsm.stackReboot();
-				return ("Возвращайся, как нибудь сыграем еще!");
+				return ("Возвращайся, как нибудь сыграем еще! \n" + PhrasesBot.s_aboutMe);
 			}
 			flagReturn = false;
 		}
@@ -66,8 +66,9 @@ public class Millionaire
 				{
 					int point;
 					point = ((level - 1) / 3) * 3 * 100;
-					level++;
-					return("Вы выиграли  " + point + " очков, в следующй раз поулчится лучше!");
+					level = 1;
+					flagReturn = true;
+					return("Вы выиграли  " + point + " очков, в следующй раз поулчится лучше! \n Еще разок? Отвечай \\'да\\' или \\'нет\\'");
 				}
 				else 
 				{
