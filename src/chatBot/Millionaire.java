@@ -3,11 +3,14 @@ package chatBot;
 import java.text.Format;
 
 
+
 public class Millionaire
 {
+	
 	MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
 	private int level;
 	AskMillionaire ask;
+	boolean flagReturn = false;
 	
 	Millionaire()
 	{
@@ -17,7 +20,16 @@ public class Millionaire
 	public String game(String userInput)
 	{
 		String botAnswer = "";
-		botAnswer = "Вопрос " + level + "\n"; 
+		botAnswer = "Вопрос " + level + "\n";
+		if (flagReturn)
+		{
+			if (!userInput.equals("да"))
+			{
+				ConsoleEntryPoint.bot.fsm.stackReboot();
+				return ("Возвращайся, как нибудь сыграем еще!");
+			}
+			flagReturn = false;
+		}
 		if (userInput.equals(""))
 		{
 			return "";
@@ -59,8 +71,9 @@ public class Millionaire
 				}
 				else 
 				{
-					level++;
-					return("Вы ничего не выиграли, попробуйте еще раз!");
+					level = 1;
+					flagReturn = true;
+					return("Вы ничего не выиграли, еще разок? Отвечай \'да\' или \'нет\'" );
 				}
 			}
 		}
