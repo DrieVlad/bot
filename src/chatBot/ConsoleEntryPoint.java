@@ -29,10 +29,6 @@ public class ConsoleEntryPoint
 				System.out.println("До скорого! Я всегда к твоим услугам :) \n");
 				continue;
 			}
-			if (s_userInput.equals(""))
-			{
-				continue;
-			}
 			s_botResponse = bot.update(s_userInput);
 			System.out.println(s_botResponse);
 		}

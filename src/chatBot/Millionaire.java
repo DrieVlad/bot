@@ -26,7 +26,7 @@ public class Millionaire
 			if (!userInput.equals("да"))
 			{
 				ConsoleEntryPoint.bot.fsm.stackReboot();
-				return ("Возвращайся, как нибудь сыграем еще! \n" + PhrasesBot.s_aboutMe);
+				return ("Возвращайся, как нибудь сыграем еще!");
 			}
 			flagReturn = false;
 		}
@@ -43,12 +43,12 @@ public class Millionaire
 		}
 		else
 		{
-		    return next(userInput);
+		    return gameNext(userInput);
 		}
 		
 	}
 	
-	private String next(String userInput) 
+	private String gameNext(String userInput) 
 	{
 		String botAnswer = "";
 		try 
