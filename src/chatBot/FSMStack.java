@@ -39,6 +39,11 @@ public class FSMStack {
 		this.pushState(ConsoleEntryPoint.bot::start);
 	}
 	
+	public void stackRebootForTest() {
+		stack.clear();
+		this.pushState(EntryPointForTest.bot::start);
+	}
+	
 	public CurrentState getCurrentState()
 	{
 		return stack.size() > 0 ? stack.get(stack.size() - 1) : null;

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class TownsContent extends GameContentFromFile
 {	
-	TownsContent(String folderName)
+	public TownsContent(String folderName)
 	{
         super(folderName);
 	}

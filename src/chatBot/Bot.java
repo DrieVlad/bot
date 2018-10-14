@@ -63,7 +63,6 @@ public class Bot {
 			fsm.popState();
 		    fsm.pushState(this::playMillionaire);
             mill = new Millionaire();
-		    //return "Хороший выбор! Введи \"старт\", чтобы начать игру!";
             return update(userInput);
 		default:			
 			fsm.popState();
