@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.HashSet;
 
 
-public class Towns 
+public class Towns implements Game
 {
 	private  HashSet<String> usedCities = new HashSet<String>();
 	private static String firstLetter = "";

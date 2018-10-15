@@ -34,14 +34,14 @@ public class FSMStack {
 		}
 	}
 	
-	public void stackReboot() {
+	public void stackReboot(CurrentState start) {
 		stack.clear();
-		this.pushState(ConsoleEntryPoint.bot::start);
+		this.pushState(start);
 	}
 	
-	public void stackRebootForTest() {
+	public void stackRebootForTest(CurrentState start) {
 		stack.clear();
-		this.pushState(EntryPointForTest.bot::start);
+		this.pushState(start);
 	}
 	
 	public CurrentState getCurrentState()

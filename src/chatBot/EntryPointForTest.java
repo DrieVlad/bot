@@ -1,6 +1,5 @@
 package chatBot;
 
-import java.util.Scanner;
 
 public class EntryPointForTest
 {
@@ -9,20 +8,8 @@ public class EntryPointForTest
 	
 	public String forTest(String s_userInput)
 	{
-		if (s_userInput.equals("помощь"))
-		{
-			return(PhrasesBot.s_aboutMe);
-		}
-		if (s_userInput.equals("устал"))
-		{				
-			bot.fsm.stackRebootForTest();
-		}
-		if (s_userInput.equals("пока"))
-		{				
-			bot.fsm.stackReboot();
-			return "До скорого! Я всегда к твоим услугам :) \n";
-		}
-		s_botResponse = bot.update(s_userInput);
+
+		s_botResponse = bot.reply(s_userInput);
 		return s_botResponse;
 	}
 }

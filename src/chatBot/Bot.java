@@ -53,6 +53,7 @@ public class Bot {
 	}
 		
 	private String twoGame(String userInput) {
+		//Game g;
 		switch (userInput) {
 		case ("1"):
 			fsm.popState();
@@ -63,7 +64,7 @@ public class Bot {
 			fsm.popState();
 		    fsm.pushState(this::playMillionaire);
             mill = new Millionaire();
-            return update(userInput);
+            return reply(userInput);
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
@@ -79,7 +80,18 @@ public class Bot {
 		return mill.game(userInput);
 	}
 
-	public String update(String userInput) {
-		return fsm.update(userInput);
-	}
+	public String reply(String userInput) {
+		
+		switch(userInput) {
+		case("помощь"):
+		    return PhrasesBot.s_aboutMe;	
+		case("устал"):
+			fsm.stackReboot(this::start);
+			break;
+		case("пока"):
+			fsm.stackReboot(this::start);
+		    return "До скорого! Я всегда к твоим услугам :) \n";
+		}
+		return fsm.update(userInput);	    
+	}	
 }

@@ -1,10 +1,8 @@
 package chatBot;
 
-import java.text.Format;
 
 
-
-public class Millionaire
+public class Millionaire implements Game
 {
 	
 	MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
@@ -25,7 +23,7 @@ public class Millionaire
 		{
 			if (!userInput.equals("да"))
 			{
-				ConsoleEntryPoint.bot.fsm.stackReboot();
+				ConsoleEntryPoint.bot.fsm.stackReboot(ConsoleEntryPoint.bot::start);
 				return ("Возвращайся, как нибудь сыграем еще!");
 			}
 			flagReturn = false;
