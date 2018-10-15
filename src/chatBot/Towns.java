@@ -16,14 +16,21 @@ public class Towns implements Game
     private static int playerNumber;
 	private boolean turnBot = true;
 	private boolean turnPlayer = false;
+	private boolean start = false;
 	private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";	
 	
 	Towns(){
 		countPlayer = 0;
-		playerNumber = 1;		
+		playerNumber = 1;
+		
 	}
 	public String game(String userInput)
-	{		
+	{	
+		if (start == false)
+		{		
+			start = true;
+			return "Хороший выбор! Введите количество игроков!";
+		}
 		if (countPlayer == 0)
 		{
 		    try 
@@ -34,8 +41,8 @@ public class Towns implements Game
 		    {  
 	            return "Неверный формат строки! Попробуй еще разок.";  
 	        }
-		}		
-		if (turnBot)
+		}	
+		if (turnBot && countPlayer != 0)
 		{							
 			int count = ran.nextInt(alphabet.length());
 			lastLetter = String.valueOf(alphabet.charAt(count));
@@ -45,8 +52,8 @@ public class Towns implements Game
 		{
 		    return runPlayer(userInput);
 		}
-		return "";
-	}	
+		return "Я не могу играть сам с собой :( Введи количество игроков!";
+	}
 	
 	private String runBot()
 	{		
@@ -83,7 +90,7 @@ public class Towns implements Game
         	lastLetter = helper.getLastSignificantLetter(userInput);
         } 
         else
-        	return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";
+        	return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";        
         if (countPlayer == 1 || playerNumber == countPlayer)
         {
         	playerNumber = 1;

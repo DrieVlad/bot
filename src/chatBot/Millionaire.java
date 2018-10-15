@@ -42,8 +42,7 @@ public class Millionaire implements Game
 		else
 		{
 		    return gameNext(userInput);
-		}
-		
+		}		
 	}
 	
 	private String gameNext(String userInput) 

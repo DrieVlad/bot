@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
-	private Towns towns;
-	private Millionaire mill;
 
 	Bot() 
 	{
@@ -53,31 +51,22 @@ public class Bot {
 	}
 		
 	private String twoGame(String userInput) {
-		//Game g;
+		Game g = null;
 		switch (userInput) {
 		case ("1"):
-			fsm.popState();
-			fsm.pushState(this::playTowns);
-			towns = new Towns();
-			return "Хороший выбор! Введите количество игроков!";
-		case ("2"):
-			fsm.popState();
-		    fsm.pushState(this::playMillionaire);
-            mill = new Millionaire();
-            return reply(userInput);
+			g = new Towns();
+            break;
+		case ("2"):		
+            g = new Millionaire();
+		    break;
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
 			return "Извините, я вас не понял :((";
 		}
-	}
-
-	private String playTowns(String userInput) {		
-		return towns.game(userInput);
-	}
-
-	public String playMillionaire(String userInput) {
-		return mill.game(userInput);
+        fsm.popState();
+    	fsm.pushState(g::game);    	
+        return reply(userInput);			
 	}
 
 	public String reply(String userInput) {
