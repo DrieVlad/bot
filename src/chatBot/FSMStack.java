@@ -39,11 +39,6 @@ public class FSMStack {
 		this.pushState(start);
 	}
 	
-	public void stackRebootForTest(CurrentState start) {
-		stack.clear();
-		this.pushState(start);
-	}
-	
 	public CurrentState getCurrentState()
 	{
 		return stack.size() > 0 ? stack.get(stack.size() - 1) : null;
