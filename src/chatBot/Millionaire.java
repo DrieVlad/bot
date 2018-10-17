@@ -1,14 +1,12 @@
 package chatBot;
 
 
-
 public class Millionaire implements Game
 {
-	
-	MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
+	private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
 	private int level;
-	AskMillionaire ask;
-	boolean flagReturn = false;
+	private AskMillionaire ask;
+	private boolean flagReturn = false;
 	
 	Millionaire()
 	{
@@ -17,7 +15,7 @@ public class Millionaire implements Game
 			
 	public String game(String userInput)
 	{
-		String botAnswer = "";
+		String botAnswer = "";		
 		botAnswer = "Вопрос " + level + "\n";
 		if (flagReturn)
 		{

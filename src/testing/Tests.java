@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import chatBot.AccessoryTowns;
-import chatBot.EntryPointForTest;
+import chatBot.Bot;
 import chatBot.PhrasesBot;
 import chatBot.TownsContent;
 
@@ -59,28 +59,28 @@ public class Tests
 	public void testAllLogicBot() 
 	{
 		String botAnswer = "";
-		final EntryPointForTest point = new EntryPointForTest();
-		botAnswer = point.forTest(" ");
-		assertEquals(botAnswer.equals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe), true);
-		botAnswer = point.forTest("игра");
-		assertEquals(botAnswer.equals("У меня есть две игры на выбор: \"Города\" и \"Миллионер\". \n"
+		Bot bot = new Bot();
+		botAnswer = bot.reply(" ");
+		assertEquals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe, botAnswer);
+		botAnswer = bot.reply("игра");
+		assertEquals("У меня есть две игры на выбор: \"Города\" и \"Миллионер\". \n"
 				+ "Пиши \"1\", если хочешь сыграть в \"Города\" " + "и \"2\", если хочешь сыграть в \"Миллионер\". \n"
-				+ "Во что будем играть? "), true);
-		botAnswer = point.forTest("2");
-	    botAnswer = point.forTest("помощь");
-	    assertEquals(botAnswer.equals(PhrasesBot.s_aboutMe), true);
-	    botAnswer = point.forTest("устал");
-	    assertEquals(botAnswer.equals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe), true);
-	    botAnswer = point.forTest("1");
-	    botAnswer = point.forTest("игра");
-	    botAnswer = point.forTest("1");
-	    assertEquals(botAnswer.equals("Хороший выбор! Введите количество игроков!"), true);
-	    botAnswer = point.forTest("помощь");
-	    assertEquals(botAnswer.equals(PhrasesBot.s_aboutMe), true);
-	    botAnswer = point.forTest("устал");
-	    assertEquals(botAnswer.equals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe), true);
-	    botAnswer = point.forTest("диалог");
-	    assertEquals(botAnswer.equals("Как тебя зовут?"), true);
+				+ "Во что будем играть? ", botAnswer);
+		botAnswer = bot.reply("2");
+	    botAnswer = bot.reply("помощь");
+	    assertEquals(PhrasesBot.s_aboutMe, botAnswer);
+	    botAnswer = bot.reply("устал");
+	    assertEquals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe, botAnswer);
+	    botAnswer = bot.reply("1");
+	    botAnswer = bot.reply("игра");
+	    botAnswer = bot.reply("1");
+	    assertTrue(botAnswer.startsWith("Мой ход"));
+	    botAnswer = bot.reply("помощь");
+	    assertEquals(PhrasesBot.s_aboutMe, botAnswer);
+	    botAnswer = bot.reply("устал");
+	    assertEquals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe, botAnswer);
+	    botAnswer = bot.reply("диалог");
+	    assertEquals("Как тебя зовут?", botAnswer);
 	    
 		
 	}

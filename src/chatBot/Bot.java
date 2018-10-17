@@ -6,7 +6,7 @@ import java.util.Random;
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
 
-	Bot() 
+	public Bot() 
 	{
 		fsm.pushState(this::start);
 	}

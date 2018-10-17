@@ -21,6 +21,7 @@ public class FSMStack {
         }
         return botResponse;
 	}
+	
 	public CurrentState popState() {
 		CurrentState state = stack.get(stack.size() - 1);
 		stack.remove(stack.size() - 1);
@@ -35,11 +36,6 @@ public class FSMStack {
 	}
 	
 	public void stackReboot(CurrentState start) {
-		stack.clear();
-		this.pushState(start);
-	}
-	
-	public void stackRebootForTest(CurrentState start) {
 		stack.clear();
 		this.pushState(start);
 	}

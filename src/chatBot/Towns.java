@@ -6,43 +6,19 @@ import java.util.HashSet;
 
 public class Towns implements Game
 {
-	private  HashSet<String> usedCities = new HashSet<String>();
+	private HashSet<String> usedCities = new HashSet<String>();
 	private static String firstLetter = "";
 	private static String lastLetter = "";
 	private static AccessoryTowns helper = new AccessoryTowns();
 	private static TownsContent reader = new TownsContent("Города");	
 	private Random ran = new Random();	
-    private static int countPlayer;
-    private static int playerNumber;
 	private boolean turnBot = true;
 	private boolean turnPlayer = false;
-	private boolean start = false;
 	private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";	
 	
-	Towns(){
-		countPlayer = 0;
-		playerNumber = 1;
-		
-	}
 	public String game(String userInput)
-	{	
-		if (start == false)
-		{		
-			start = true;
-			return "Хороший выбор! Введите количество игроков!";
-		}
-		if (countPlayer == 0)
-		{
-		    try 
-		    {
-			    countPlayer = Integer.valueOf(userInput);	
-	        }
-		    catch (NumberFormatException e) 
-		    {  
-	            return "Неверный формат строки! Попробуй еще разок.";  
-	        }
-		}	
-		if (turnBot && countPlayer != 0)
+	{			
+		if (turnBot)
 		{							
 			int count = ran.nextInt(alphabet.length());
 			lastLetter = String.valueOf(alphabet.charAt(count));
@@ -64,7 +40,7 @@ public class Towns implements Game
 		    turnPlayer = true;
 		}
 		lastLetter = helper.getLastSignificantLetter(botTown);
-	    return "Мой ход: " + botTown + "\n" + "Ходит 1 игрок. Слово на букву: " + lastLetter.toUpperCase() + "!";				
+	    return "Мой ход: " + botTown + "\n" + "Твой ход. Тебе слово на букву: " + lastLetter.toUpperCase() + "!";				
 	}
 	
 	private String runPlayer(String userInput)
@@ -91,15 +67,6 @@ public class Towns implements Game
         } 
         else
         	return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";        
-        if (countPlayer == 1 || playerNumber == countPlayer)
-        {
-        	playerNumber = 1;
-        	return runBot();
-        }
-        else
-        {
-        	playerNumber += 1;
-        	return "Ходит "+ playerNumber + " игрок. Слово на букву: " + lastLetter.toUpperCase() + "!";
-        }			
+        return runBot();		
 	}	
 }
