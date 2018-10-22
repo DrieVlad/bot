@@ -57,7 +57,7 @@ public class Bot {
 			game = new Towns();
             break;
 		case ("2"):		
-            game = new Millionaire();
+            game = new Millionaire(this);
 		    break;
 		default:			
 			fsm.popState();

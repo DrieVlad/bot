@@ -8,7 +8,6 @@ public class ConsoleEntryPoint
 {
 	private static final Scanner input = new Scanner(System.in);
 	public static Map<String,Bot> dictionaryUser = new HashMap<String,Bot>();
-	public static String currentUser = "";	
 	private static String[] parseUserInput;
 	
 	public static void main(String[] args)
@@ -19,15 +18,14 @@ public class ConsoleEntryPoint
 			try
 			{
 			    parseUserInput = s_userInput.split(",");
-			    currentUser = parseUserInput[0];
-			    if (dictionaryUser.containsKey(currentUser))
+			    if (dictionaryUser.containsKey(parseUserInput[0]))
 			    {
-				    System.out.println(dictionaryUser.get(currentUser).reply(parseUserInput[1]));
+				    System.out.println(dictionaryUser.get(parseUserInput[0]).reply(parseUserInput[1]));
 			    }
 			    else
 			    {
-				    dictionaryUser.put(currentUser, new Bot());
-				    System.out.println(dictionaryUser.get(currentUser).reply(parseUserInput[1]));
+				    dictionaryUser.put(parseUserInput[0], new Bot());
+				    System.out.println(dictionaryUser.get(parseUserInput[0]).reply(parseUserInput[1]));
 			    }
 			}
 			catch (ArrayIndexOutOfBoundsException e)
