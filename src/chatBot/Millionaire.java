@@ -4,7 +4,7 @@ package chatBot;
 public class Millionaire implements Game
 {
 	private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
-	private int level;
+	private static int level;
 	private AskMillionaire ask;
 	private boolean flagReturn = false;
 	
@@ -13,7 +13,7 @@ public class Millionaire implements Game
 		level = 1;
 	}
 			
-	public String game(String userInput)
+	public String reply(String userInput)
 	{
 		String botAnswer = "";		
 		botAnswer = "Вопрос " + level + "\n";
@@ -21,7 +21,8 @@ public class Millionaire implements Game
 		{
 			if (!userInput.equals("да"))
 			{
-				ConsoleEntryPoint.bot.fsm.stackReboot(ConsoleEntryPoint.bot::start);
+				ConsoleEntryPoint.dictionaryUser.get(ConsoleEntryPoint.currentUser)
+				.fsm.stackReboot(ConsoleEntryPoint.dictionaryUser.get(ConsoleEntryPoint.currentUser)::start);
 				return ("Возвращайся, как нибудь сыграем еще!");
 			}
 			flagReturn = false;
@@ -34,7 +35,7 @@ public class Millionaire implements Game
 		{
 			ask = reader.nextAsk(level);
 			botAnswer = ask.stringAsk();
-			level++;
+		    level++;
 			return botAnswer;
 		}
 		else
@@ -43,27 +44,36 @@ public class Millionaire implements Game
 		}		
 	}
 	
-	private String gameNext(String userInput) 
+	private String gameNext(String userInput) throws NumberFormatException
 	{
 		String botAnswer = "";
 		try 
 		{
+			if (!"1234".contains(userInput))
+				throw new NumberFormatException(); 
 			if (ask.checkAsk(Integer.parseInt(userInput))) 
-			{
-				level++;
+			{		
+				if (level == 13)
+				{
+					flagReturn = true;
+					level = 1;
+					return ("Молодец, ты победил в игре \"Миллионер\" Твой выигрыш составил 1200 очков! \nСыграем ещё разок? Отвечай \\'да\\' или \\'нет\\'");
+				}
 				ask = reader.nextAsk(level);
 				botAnswer = ask.stringAsk();
-				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков внимание, следующий вопрос!\n" + botAnswer);			
+				level++;
+				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков внимание, следующий вопрос!\n" + botAnswer);
+
 			}
 			else 
-			{
+			{				
 				if ((level - 1) / 3 != 0) 
 				{
 					int point;
 					point = ((level - 1) / 3) * 3 * 100;
 					level = 1;
 					flagReturn = true;
-					return("Вы выиграли  " + point + " очков, в следующй раз поулчится лучше! \n Еще разок? Отвечай \\'да\\' или \\'нет\\'");
+					return("Вы выиграли  " + point + " очков, в следующй раз получится лучше! \n Еще разок? Отвечай \\'да\\' или \\'нет\\'");
 				}
 				else 
 				{

@@ -16,7 +16,7 @@ public class Towns implements Game
 	private boolean turnPlayer = false;
 	private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";	
 	
-	public String game(String userInput)
+	public String reply(String userInput)
 	{			
 		if (turnBot)
 		{							

@@ -51,21 +51,21 @@ public class Bot {
 	}
 		
 	private String twoGame(String userInput) {
-		Game g = null;
+		Game game = null;
 		switch (userInput) {
 		case ("1"):
-			g = new Towns();
+			game = new Towns();
             break;
 		case ("2"):		
-            g = new Millionaire();
+            game = new Millionaire();
 		    break;
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
 			return "Извините, я вас не понял :((";
 		}
-        fsm.popState();
-    	fsm.pushState(g::game);    	
+		fsm.popState();
+        fsm.pushState(game::reply);
         return reply(userInput);			
 	}
 
