@@ -7,10 +7,12 @@ public class Millionaire implements Game
 	private static int level;
 	private AskMillionaire ask;
 	private boolean flagReturn = false;
+	Bot bot;
 	
-	Millionaire()
+	Millionaire(Bot bot)
 	{
 		level = 1;
+		this.bot = bot;
 	}
 			
 	public String reply(String userInput)
@@ -21,8 +23,7 @@ public class Millionaire implements Game
 		{
 			if (!userInput.equals("да"))
 			{
-				ConsoleEntryPoint.dictionaryUser.get(ConsoleEntryPoint.currentUser)
-				.fsm.stackReboot(ConsoleEntryPoint.dictionaryUser.get(ConsoleEntryPoint.currentUser)::start);
+				bot.fsm.stackReboot(bot::start);
 				return ("Возвращайся, как нибудь сыграем еще!");
 			}
 			flagReturn = false;
