@@ -75,7 +75,7 @@ public class Tests
 	    botAnswer = bot.reply("помощь");
 	    assertEquals(PhrasesBot.s_aboutMe, botAnswer);
 	    botAnswer = bot.reply("устал");
-	    assertEquals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe, botAnswer);
+	    assertEquals("Поиграем или пообщаемся? Пиши: \"игра\" или \"диалог\"", botAnswer);
 	    botAnswer = bot.reply("1");
 	    botAnswer = bot.reply("игра");
 	    botAnswer = bot.reply("1");
@@ -83,7 +83,7 @@ public class Tests
 	    botAnswer = bot.reply("помощь");
 	    assertEquals(PhrasesBot.s_aboutMe, botAnswer);
 	    botAnswer = bot.reply("устал");
-	    assertEquals("Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe, botAnswer);
+	    assertEquals("Поиграем или пообщаемся? Пиши: \"игра\" или \"диалог\"", botAnswer);
 	    botAnswer = bot.reply("диалог");
 	    assertEquals("Как тебя зовут?", botAnswer);
 	    
