@@ -35,27 +35,31 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     @Override
     public String getBotUsername() 
     {
-    	
-	    return BOT_USERNAME;
-            //возвращаем юзера
+    	//возвращаем имя бота
+	    return BOT_USERNAME;            
     }
 
     @Override
     public void onUpdateReceived(Update update) 
     {
-    	long chat_id = update.getMessage().getChatId();
+    	long chatId = update.getMessage().getChatId();
     	String userInput = update.getMessage().getText();
-    	String message_text = "";
-    	if (dictionaryUser.containsKey(chat_id))
-	    {
-    		message_text = dictionaryUser.get(chat_id).reply(userInput);
-	    }
-	    else
-	    {
-		    dictionaryUser.put(chat_id, new Bot());
-		    message_text = dictionaryUser.get(chat_id).reply(userInput);
-	    }
-        SendMessage message = new SendMessage().setChatId(chat_id).setText(message_text);
+    	String messageText = "";
+    	dictionaryUser.putIfAbsent(chatId, new Bot());
+		messageText = dictionaryUser.get(chatId).reply(userInput);	    
+        sendMsg(chatId, messageText);    
+    }
+
+    @Override
+    public String getBotToken() 
+    {
+    	//Токен бота
+    	return BOT_TOKEN;          
+    }
+ 
+	private void sendMsg(long chatId, String messageText) 
+	{
+		SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);
         try 
         {
             execute(message);
@@ -63,26 +67,6 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
         catch (TelegramApiException e) 
         {
         	e.printStackTrace();
-        }     
-    }
-
-    @Override
-    public String getBotToken() 
-    {
-    	
-    	return BOT_TOKEN;
-            //Токен бота
-    }
-    
-	private void sendMsg(long chat_id, String userInput) {
-		SendMessage sendMessage = new SendMessage();
-		sendMessage.setChatId(msg.getChatId()); // Боту может писать не один человек, и поэтому чтобы отправить сообщение, грубо говоря нужно узнать куда его отправлять
-		sendMessage.setText(text);
-		try { //Чтобы не крашнулась программа при вылете Exception 
-			execute(sendMessage);
-		} catch (TelegramApiException e){
-			e.printStackTrace();
-		}
-	}
-		
-	}
+        } 
+	}	
+}
