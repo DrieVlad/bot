@@ -17,7 +17,6 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
 {
 	private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
 	private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
-	Bot bot = new Bot();
 	public static Map<Long,Bot> dictionaryUser = new HashMap<Long,Bot>();
 	
     public static void main(String[] args) 
@@ -75,7 +74,7 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
             //Токен бота
     }
     
-	private void sendMsg(Message msg, String text) {
+	private void sendMsg(long chat_id, String userInput) {
 		SendMessage sendMessage = new SendMessage();
 		sendMessage.setChatId(msg.getChatId()); // Боту может писать не один человек, и поэтому чтобы отправить сообщение, грубо говоря нужно узнать куда его отправлять
 		sendMessage.setText(text);

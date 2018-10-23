@@ -63,7 +63,7 @@ public class Millionaire implements Game
 				ask = reader.nextAsk(level);
 				botAnswer = ask.stringAsk();
 				level++;
-				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков внимание, следующий вопрос!\n" + botAnswer);
+				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков внимание, следующий вопрос! \n" + botAnswer);
 
 			}
 			else 

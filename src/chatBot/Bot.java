@@ -71,12 +71,12 @@ public class Bot {
 
 	public String reply(String userInput) {
 		
-		switch(userInput) {
+		switch(userInput.toLowerCase()) {
 		case("помощь"):
 		    return PhrasesBot.s_aboutMe;	
 		case("устал"):
-			fsm.stackReboot(this::start);
-			break;
+			fsm.stackReboot(this::launch);
+			return "Поиграем или пообщаемся? Пиши: \"игра\" или \"диалог\"";
 		case("пока"):
 			fsm.stackReboot(this::start);
 		    return "До скорого! Я всегда к твоим услугам :) \n";
