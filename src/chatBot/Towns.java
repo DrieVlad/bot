@@ -8,7 +8,7 @@ public class Towns implements Game
 {
 	private HashSet<String> usedCities = new HashSet<String>();
 	private static String firstLetter = "";
-	private static String lastLetter = "";
+	public static String lastLetter = "";
 	private static AccessoryTowns helper = new AccessoryTowns();
 	private static TownsContent reader = new TownsContent("Города");	
 	private Random ran = new Random();	
@@ -28,7 +28,7 @@ public class Towns implements Game
 		{
 		    return runPlayer(userInput);
 		}
-		return "Я не могу играть сам с собой :( Введи количество игроков!";
+		return "Игра окончена!";
 	}
 	
 	private String runBot()
@@ -43,7 +43,7 @@ public class Towns implements Game
 	    return "Мой ход: " + botTown + "\n" + "Твой ход. Тебе слово на букву: " + lastLetter.toUpperCase() + "!";				
 	}
 	
-	private String runPlayer(String userInput)
+	public String runPlayer(String userInput)
 	{		
 		if (userInput.trim().isEmpty())
 		{

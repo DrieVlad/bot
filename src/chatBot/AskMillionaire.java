@@ -2,9 +2,9 @@ package chatBot;
 
 public class AskMillionaire 
 {
-	String question;
-	int trueAnswer;
-    String[] answers = new String[4];
+	public String question;
+	public Integer trueAnswer;
+    public String[] answers = new String[4];
     
     public AskMillionaire()
     {
@@ -16,8 +16,7 @@ public class AskMillionaire
 		trueAnswer = this.trueAnswer;
 		for (int i = 0; i < 4; i++) 
 		{
-			answers[i] = this.answers[i];
-			
+			answers[i] = this.answers[i];		
 		}
 	}
     public String stringAsk()

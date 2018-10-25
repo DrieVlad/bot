@@ -13,5 +13,5 @@ module chatBot {
 	requires telegrambots.meta;
 	requires telegrambotsextensions;
 	requires telegrambots.chat.session.bot;
-	requires telegrambots.spring.boot.starter;
+	requires telegrambots.spring.boot.starter;		
 }

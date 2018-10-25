@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class MillionaireContent extends GameContentFromFile
 {	
-	MillionaireContent(String folderName)
+	public MillionaireContent(String folderName)
 	{
 		super(folderName);
 	}
