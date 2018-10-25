@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
+	public boolean flagMillionaire = false;
 
 	public Bot() 
 	{
@@ -14,7 +15,7 @@ public class Bot {
 	public String start(String userInput) {
 		fsm.popState();
 		fsm.pushState(this::launch);
-		return "Приветствую тебя, мой дорогой друг!\n" + PhrasesBot.s_aboutMe;
+		return "🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe;
 	}
 
 	private String launch(String userInput) {
@@ -22,21 +23,21 @@ public class Bot {
 		case ("игра"):
 			fsm.popState();
 		    fsm.pushState(this::twoGame);
-			return "У меня есть две игры на выбор: \"Города\" и \"Миллионер\". \n"
-					+ "Пиши \"1\", если хочешь сыграть в \"Города\" " + "и \"2\", если хочешь сыграть в \"Миллионер\". \n"
-					+ "Во что будем играть? ";
+			return "У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
+					+ "Пиши название той игры, в которую хочешь сыграть😊. \n"
+					+ "Во что будем играть❔";
 		case ("диалог"):
 			fsm.popState();
 			fsm.pushState(this::dialogueQuestion);
-			return "Как тебя зовут?";
+			return "Как тебя зовут?👤";
 		case (""):
 			fsm.popState();
 		    fsm.pushState(this::launch);
-			return "Скажи что-нибудь =)";
+			return "Скажи что-нибудь☺";
 		default:
 			fsm.popState();
 			fsm.pushState(this::launch);
-			return "Извините, я вас не понял :((";		
+			return "Извините, я вас не понял☹";		
 		}
 	}
 
@@ -53,16 +54,16 @@ public class Bot {
 	private String twoGame(String userInput) {
 		Game game = null;
 		switch (userInput) {
-		case ("1"):
+		case ("города"):
 			game = new Towns();
             break;
-		case ("2"):		
+		case ("миллионер"):		
             game = new Millionaire(this);
 		    break;
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
-			return "Извините, я вас не понял :((";
+			return "Извините, я вас не понял☹";
 		}
 		fsm.popState();
         fsm.pushState(game::reply);
@@ -71,15 +72,17 @@ public class Bot {
 
 	public String reply(String userInput) {
 		
-		switch(userInput) {
-		case("помощь"):
-		    return PhrasesBot.s_aboutMe;	
-		case("устал"):
-			fsm.stackReboot(this::start);
-			break;
-		case("пока"):
-			fsm.stackReboot(this::start);
-		    return "До скорого! Я всегда к твоим услугам :) \n";
+		userInput = userInput.toLowerCase();
+		switch(userInput) 
+		{
+		    case("помощь"):
+		        return "ℹ" + PhrasesBot.s_aboutMe;
+		    case("устал"):
+			    fsm.stackReboot(this::launch);
+			    return "Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨";
+		    case("пока"):
+			    fsm.stackReboot(this::start);
+		        return "До скорого!👋 Я всегда к твоим услугам🦆 \n";
 		}
 		return fsm.update(userInput);	    
 	}	

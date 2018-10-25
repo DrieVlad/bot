@@ -4,12 +4,13 @@ package chatBot;
 public class Millionaire implements Game
 {
 	private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
-	private static int level;
-	private AskMillionaire ask;
+	public static int level;
+	public AskMillionaire ask = new AskMillionaire();
 	private boolean flagReturn = false;
+	private static String numberQuestions = "";
 	Bot bot;
 	
-	Millionaire(Bot bot)
+	public Millionaire(Bot bot)
 	{
 		level = 1;
 		this.bot = bot;
@@ -17,14 +18,14 @@ public class Millionaire implements Game
 			
 	public String reply(String userInput)
 	{
-		String botAnswer = "";		
-		botAnswer = "Вопрос " + level + "\n";
+		String botAnswer = "";			
+		numberQuestions = "Вопрос №" + level + ":\n";
 		if (flagReturn)
 		{
-			if (!userInput.equals("да"))
+			if (!(userInput.equals("да") || (userInput.equals("Да"))))
 			{
 				bot.fsm.stackReboot(bot::start);
-				return ("Возвращайся, как нибудь сыграем еще!");
+				return ("Возвращайся, как-нибудь сыграем еще!🦆");
 			}
 			flagReturn = false;
 		}
@@ -37,7 +38,7 @@ public class Millionaire implements Game
 			ask = reader.nextAsk(level);
 			botAnswer = ask.stringAsk();
 		    level++;
-			return botAnswer;
+			return numberQuestions + botAnswer;
 		}
 		else
 		{
@@ -45,7 +46,7 @@ public class Millionaire implements Game
 		}		
 	}
 	
-	private String gameNext(String userInput) throws NumberFormatException
+	public String gameNext(String userInput) throws NumberFormatException
 	{
 		String botAnswer = "";
 		try 
@@ -58,12 +59,13 @@ public class Millionaire implements Game
 				{
 					flagReturn = true;
 					level = 1;
-					return ("Молодец, ты победил в игре \"Миллионер\" Твой выигрыш составил 1200 очков! \nСыграем ещё разок? Отвечай \\'да\\' или \\'нет\\'");
+					return ("Молодец, ты победил в игре \"Миллионер\"!🏆 Твой выигрыш составил 1200 очков! \nСыграем ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎");
 				}
 				ask = reader.nextAsk(level);
 				botAnswer = ask.stringAsk();
+				numberQuestions = "Вопрос №" + level + ":\n";
 				level++;
-				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков внимание, следующий вопрос!\n" + botAnswer);
+				return("Молодец, ты выиграл " + 100 * (level - 2) + " очков!✋ Внимание, следующий вопрос!🔔 \n" + numberQuestions + botAnswer);
 
 			}
 			else 
@@ -74,19 +76,19 @@ public class Millionaire implements Game
 					point = ((level - 1) / 3) * 3 * 100;
 					level = 1;
 					flagReturn = true;
-					return("Вы выиграли  " + point + " очков, в следующй раз получится лучше! \n Еще разок? Отвечай \\'да\\' или \\'нет\\'");
+					return("Вы выиграли " + point + " очков, в следующий раз получится лучше!😉👌 \n Ещё разок?😏  Отвечай \'да\'👍 или \'нет\'👎");
 				}
 				else 
 				{
 					level = 1;
 					flagReturn = true;
-					return("Вы ничего не выиграли, еще разок? Отвечай \'да\' или \'нет\'" );
+					return("Вы ничего не выиграли!😣 Ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎");
 				}
 			}
 		}
 		catch(NumberFormatException e)
 		{
-			return "Попробуйте ввести цифру от 1 до 4";
+			return "Попробуйте ввести цифру от 1⃣ до 4⃣.";
 		}
 	}
 }
