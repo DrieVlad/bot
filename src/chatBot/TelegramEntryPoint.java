@@ -20,7 +20,7 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
 {
 	private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
 	private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
-	private static ConcurrentMap<Long,Bot> dictionaryUser = new ConcurrentHashMap<Long,Bot>();
+	private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
 	private static ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 	
     public static void main(String[] args) 
@@ -49,10 +49,13 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     	long chatId = update.getMessage().getChatId();
     	String userInput = update.getMessage().getText();
     	String messageText = "";
-    	Bot bot = dictionaryUser.putIfAbsent(chatId, new Bot());
-    	synchronized(userInput)
+    	if (!dictionaryUser.containsKey(chatId))
+    	    dictionaryUser.put(chatId, new Chat(new Bot(), new Object()));
+    	Bot bot = dictionaryUser.get(chatId).getBot();
+    	Object locker = dictionaryUser.get(chatId).getLocker();
+    	synchronized(locker)
     	{
-		    messageText = bot.reply(userInput);	 
+    	    messageText = bot.reply(userInput);
             sendMsg(chatId, messageText, userInput);    
     	}
     }

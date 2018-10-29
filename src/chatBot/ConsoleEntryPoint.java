@@ -18,7 +18,8 @@ public class ConsoleEntryPoint
 			try
 			{
 			    parseUserInput = s_userInput.split(",");
-			    dictionaryUser.putIfAbsent(parseUserInput[0], new Bot());
+			    if (!dictionaryUser.containsKey(parseUserInput[0]))
+			        dictionaryUser.put(parseUserInput[0], new Bot());
 				System.out.println(dictionaryUser.get(parseUserInput[0]).reply(parseUserInput[1]));	
 			}
 			catch (ArrayIndexOutOfBoundsException e)

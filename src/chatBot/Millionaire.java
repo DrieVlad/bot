@@ -51,7 +51,7 @@ public class Millionaire implements Game
 		String botAnswer = "";
 		try 
 		{
-			if (!"1234".contains(userInput))
+			if (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4")))
 				throw new NumberFormatException(); 
 			if (ask.checkAsk(Integer.parseInt(userInput))) 
 			{		
