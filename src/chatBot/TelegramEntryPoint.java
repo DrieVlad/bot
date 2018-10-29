@@ -1,20 +1,16 @@
 package chatBot;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.ArrayList;
 
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
@@ -24,7 +20,7 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
 {
 	private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
 	private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
-	private static Map<Long,Bot> dictionaryUser = new HashMap<Long,Bot>();
+	private static ConcurrentMap<Long,Bot> dictionaryUser = new ConcurrentHashMap<Long,Bot>();
 	private static ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 	
     public static void main(String[] args) 
@@ -53,9 +49,12 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     	long chatId = update.getMessage().getChatId();
     	String userInput = update.getMessage().getText();
     	String messageText = "";
-    	dictionaryUser.putIfAbsent(chatId, new Bot());
-		messageText = dictionaryUser.get(chatId).reply(userInput);	 
-        sendMsg(chatId, messageText, userInput);    
+    	Bot bot = dictionaryUser.putIfAbsent(chatId, new Bot());
+    	synchronized(userInput)
+    	{
+		    messageText = bot.reply(userInput);	 
+            sendMsg(chatId, messageText, userInput);    
+    	}
     }
 
     @Override
