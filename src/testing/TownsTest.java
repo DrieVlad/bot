@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 import chatBot.AccessoryTowns;
+import chatBot.Bot;
 import chatBot.Towns;
 import chatBot.TownsContent;
 
@@ -13,7 +14,8 @@ public class TownsTest {
 	
 	private AccessoryTowns accessoryTowns = new AccessoryTowns();
 	private TownsContent reader = new TownsContent("Города");
-	private Towns towns = new Towns();
+	private Bot bot = new Bot();
+	private Towns towns = new Towns(bot);
 	
 	@Test
 	public void runPlayerTownTest()

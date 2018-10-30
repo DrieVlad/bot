@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 @FunctionalInterface
 interface CurrentState {
-	public String run(String userInput);
+	public Message run(Message userInput);
 }
 
 public class FSMStack {
 	private ArrayList<CurrentState> stack = new ArrayList<CurrentState>();
 
-	public String update(String userInput)
+	public Message update(Message userInput)
 	{
 		CurrentState currentStateFunction = getCurrentState();
-	    String botResponse = "";
+	    Message botResponse = null;
         if (currentStateFunction != null) 
         {
         	botResponse = currentStateFunction.run(userInput);

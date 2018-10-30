@@ -20,7 +20,7 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
 {
 	private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
 	private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
-	private static ConcurrentMap<Long,Bot> dictionaryUser = new ConcurrentHashMap<Long,Bot>();
+	private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
 	private static ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 	
     public static void main(String[] args) 
@@ -44,79 +44,58 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     }
 
     @Override
-    public void onUpdateReceived(Update update) 
-    {
-    	long chatId = update.getMessage().getChatId();
-    	String userInput = update.getMessage().getText();
-    	String messageText = "";
-    	Bot bot = dictionaryUser.putIfAbsent(chatId, new Bot());
-    	synchronized(userInput)
-    	{
-		    messageText = bot.reply(userInput);	 
-            sendMsg(chatId, messageText, userInput);    
-    	}
-    }
-
-    @Override
     public String getBotToken() 
     {
     	return BOT_TOKEN;          
     }
+
+    @Override
+    public void onUpdateReceived(Update update) 
+    {
+    	long chatId = update.getMessage().getChatId();
+    	String userInput = update.getMessage().getText().toLowerCase();
+    	if (!dictionaryUser.containsKey(chatId))
+    	    dictionaryUser.put(chatId, new Chat(new Bot(), new Object()));
+    	Bot bot = dictionaryUser.get(chatId).getBot();
+    	Object locker = dictionaryUser.get(chatId).getLocker();
+    	Message userMessage = new Message();
+    	Message botMessage = new Message();
+    	userMessage.setTextMessage(userInput);
+    	synchronized(locker)
+    	{
+    	    botMessage = bot.reply(userMessage);
+            sendMsg(chatId, botMessage, userInput);    
+    	}
+    }
     
-    private void setButtons(String messageText, SendMessage message)
+    private void setButtons(Message botMessage, SendMessage message)
     {   	
     	keyboardMarkup.setOneTimeKeyboard(true);
 		keyboardMarkup.setResizeKeyboard(true);
 		List<KeyboardRow> keyboard = new ArrayList<>();
 		KeyboardRow row = new KeyboardRow();
-			   
-		if (messageText.startsWith("Поиграем") || messageText.startsWith("🦆Приветствую тебя")) 
+	    
+		if (botMessage.isKeyboardNotEmpty) 
 		{
-			row.add("Игра");
-			row.add("Диалог");
-		}
-		else if (messageText.startsWith("У меня есть")) 
-		{
-			row.add("Города");
-			row.add("Миллионер");			
-		}	
-		else if (messageText.contains("Вопрос")) 
-		{
-			row.add("1");
-			row.add("2");
-			row.add("3");
-			row.add("4");
-		}
-		else if (messageText.contains("Отвечай")) 
-		{
-			row.add("Да");
-			row.add("Нет");
-		}
-		
-		if (!(messageText.startsWith("ℹЯ бот Евлампий") || messageText.startsWith("Попробуйте") 
-				|| messageText.startsWith("Извините") || messageText.startsWith("Скажи")))
-		{
-			if (!(messageText.startsWith("До скорого!") || messageText.startsWith("Возвращайся")))
+			ArrayList<ArrayList<String>> listKeyboards = botMessage.getKeyboard();
+			for(int i = 0; i < listKeyboards.size(); i++) 
 			{
+				row = new KeyboardRow();
+				for (int j = 0; j < listKeyboards.get(i).size(); j++) 
+				{
+					row.add(listKeyboards.get(i).get(j));
+				}
 				keyboard.add(row);
-			    row = new KeyboardRow();
-		        row.add("Помощь");
-			    row.add("Устал");		    			    	
 			}
-			else
-			{
-				row.add("Я скучаю!"); 									
-			}
-			keyboard.add(row);
-			keyboardMarkup.setKeyboard(keyboard); 
-		}		
-        message.setReplyMarkup(keyboardMarkup);	
+			keyboardMarkup.setKeyboard(keyboard);
+		}
     }
  
-	private void sendMsg(long chatId, String messageText, String userInput) 
+	private void sendMsg(long chatId, Message botMessage, String userInput) 
 	{
-		SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);		
-		setButtons(messageText, message);
+		SendMessage message = new SendMessage().setChatId(chatId).setText(botMessage.getTextMessage());		
+		setButtons(botMessage, message);		
+        message.setReplyMarkup(keyboardMarkup);	
        
         try 
         {        	

@@ -1,6 +1,7 @@
 package chatBot;
 
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 
@@ -15,20 +16,34 @@ public class Towns implements Game
 	private boolean turnBot = true;
 	private boolean turnPlayer = false;
 	private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";	
+	private Message message = null;
+	private Bot bot;
 	
-	public String reply(String userInput)
-	{			
+	public Towns(Bot bot)
+	{
+		this.bot = bot;
+		this.message = bot.message;
+	}
+	
+	public Message reply(Message userInput)
+	{	
+		ArrayList<String> row = new ArrayList<>();
+		ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
+		bot.setHelpAndTired(row, keyboard);
 		if (turnBot)
 		{							
 			int count = ran.nextInt(alphabet.length());
 			lastLetter = String.valueOf(alphabet.charAt(count));
-			return runBot();
+			message.setTextMessage(runBot());
+		    return message;
 		}			            
 		if (turnPlayer)
 		{
-		    return runPlayer(userInput);
+			message.setTextMessage(runPlayer(userInput.getTextMessage()));			
+		    return message;
 		}
-		return "Игра окончена!";
+		message.setTextMessage("Игра окончена!");
+	    return message;
 	}
 	
 	private String runBot()

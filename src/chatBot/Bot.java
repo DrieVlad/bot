@@ -1,61 +1,84 @@
 package chatBot;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
 public class Bot {
 	public final FSMStack fsm = new FSMStack();
 	public boolean flagMillionaire = false;
+	public Message message = new Message();
 
 	public Bot() 
 	{
 		fsm.pushState(this::start);
 	}
 	
-	public String start(String userInput) {
+	public Message start(Message userInput) {
+		ArrayList<String> row = new ArrayList<>();
+		ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
 		fsm.popState();
 		fsm.pushState(this::launch);
-		return "🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe;
+		message.setTextMessage("🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe);
+		row.add("Игра");
+		row.add("Диалог");
+		keyboard.add(row);
+		row = new ArrayList<>();
+		setHelpAndTired(row, keyboard);
+		return message;
 	}
 
-	private String launch(String userInput) {
-		switch (userInput) {
+	private Message launch(Message userInput) {
+		ArrayList<String> row = new ArrayList<>();
+		ArrayList<ArrayList<String>> keyboard = new ArrayList<>();		
+		switch (userInput.getTextMessage()) {
 		case ("игра"):
 			fsm.popState();
 		    fsm.pushState(this::twoGame);
-			return "У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
+		    message.setTextMessage("У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
 					+ "Пиши название той игры, в которую хочешь сыграть😊. \n"
-					+ "Во что будем играть❔";
+					+ "Во что будем играть❔");
+		    row.add("Города");
+			row.add("Миллионер");
+			keyboard.add(row);
+			row = new ArrayList<>();
+			setHelpAndTired(row, keyboard);
+			return message;
 		case ("диалог"):
 			fsm.popState();
 			fsm.pushState(this::dialogueQuestion);
-			return "Как тебя зовут?👤";
+			message.setTextMessage("Как тебя зовут?👤");
+			setHelpAndTired(row, keyboard);
+			return message;
 		case (""):
 			fsm.popState();
 		    fsm.pushState(this::launch);
-			return "Скажи что-нибудь☺";
+		    message.setTextMessage("Скажи что-нибудь☺");
+			return message;
 		default:
 			fsm.popState();
 			fsm.pushState(this::launch);
-			return "Извините, я вас не понял☹";		
+			message.setTextMessage("Извините, я вас не понял☹");
+			return message;		
 		}
 	}
 
-	private String dialogueQuestion(String userInput)
+	private Message dialogueQuestion(Message userInput)
 	{		
 		int count1;
 		int count2;
 		Random randomer = new Random();
 		count1 = randomer.nextInt(PhrasesBot.s_questions.length);
 		count2 = randomer.nextInt(PhrasesBot.s_phrases.length);
-		return PhrasesBot.s_phrases[count2] + " " + PhrasesBot.s_questions[count1];		
+		message.setTextMessage(PhrasesBot.s_phrases[count2] + " " + PhrasesBot.s_questions[count1]);
+		return message;		
 	}
 		
-	private String twoGame(String userInput) {
+	private Message twoGame(Message userInput) {
 		Game game = null;
-		switch (userInput) {
+		switch (userInput.getTextMessage()) {
 		case ("города"):
-			game = new Towns();
+			game = new Towns(this);
             break;
 		case ("миллионер"):		
             game = new Millionaire(this);
@@ -63,27 +86,49 @@ public class Bot {
 		default:			
 			fsm.popState();
 			fsm.pushState(this::twoGame);
-			return "Извините, я вас не понял☹";
+			message.setTextMessage("Извините, я вас не понял☹");
+			return message;
 		}
 		fsm.popState();
         fsm.pushState(game::reply);
         return reply(userInput);			
 	}
+	
+	public void setHelpAndTired(ArrayList<String> row, ArrayList<ArrayList<String>> keyboard)
+	{
+		row.add("Помощь");
+	    row.add("Устал");
+	    keyboard.add(row);
+	    message.setKeyboard(keyboard);
+	}
 
-	public String reply(String userInput) {
+	public Message reply(Message userInput)
+	{
+		ArrayList<String> row = new ArrayList<>();
+		ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
+		message = fsm.update(userInput);
 		
-		userInput = userInput.toLowerCase();
-		switch(userInput) 
+		switch(userInput.getTextMessage()) 
 		{
 		    case("помощь"):
-		        return "ℹ" + PhrasesBot.s_aboutMe;
+		        message.setTextMessage("ℹ" + PhrasesBot.s_aboutMe);
+		        break;
 		    case("устал"):
 			    fsm.stackReboot(this::launch);
-			    return "Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨";
+		        message.setTextMessage("Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨");
+		        row.add("Игра");
+				row.add("Диалог");
+				keyboard.add(row);
+				row = new ArrayList<>();
+				setHelpAndTired(row, keyboard);
+			    break;
 		    case("пока"):
 			    fsm.stackReboot(this::start);
-		        return "До скорого!👋 Я всегда к твоим услугам🦆 \n";
-		}
-		return fsm.update(userInput);	    
+		        message.setTextMessage("До скорого!👋 Я всегда к твоим услугам🦆 \n");
+		        row.add("Я скучаю!");
+		        keyboard.add(row);
+		        message.setKeyboard(keyboard);		       
+		}	
+		return message;	    
 	}	
 }
