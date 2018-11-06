@@ -34,20 +34,20 @@ public class MillionaireTest {
 	public void winMillionaireTest()
 	{
 		millionaire.ask.trueAnswer = 1;		
-		Millionaire.level = 5;
+		millionaire.level = 5;
 		message.setTextMessage("2");
 		assertTrue(millionaire.gameNext(message).getTextMessage().startsWith("Молодец, ты выиграл 400 очков!✋ Внимание, следующий вопрос!🔔 \nВопрос №5"));
 		millionaire.ask.trueAnswer = 3;
-		Millionaire.level = 13;
+		millionaire.level = 13;
 		message.setTextMessage("4");
 		assertEquals("Молодец, ты победил в игре \"Миллионер\"!🏆 Твой выигрыш составил 1200 очков! \nСыграем ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎", 
 				millionaire.gameNext(message).getTextMessage());
 		millionaire.ask.trueAnswer = 2;
-		Millionaire.level = 4;
+		millionaire.level = 4;
 		message.setTextMessage("1");
 		assertEquals("Вы выиграли 300 очков, в следующий раз получится лучше!😉👌 \n Ещё разок?😏  Отвечай \'да\'👍 или \'нет\'👎", 
 				millionaire.gameNext(message).getTextMessage());	
-		Millionaire.level = 2;
+		millionaire.level = 2;
 		millionaire.ask.trueAnswer = 4;
 		message.setTextMessage("4");
 		assertEquals("Вы ничего не выиграли!😣 Ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎", 

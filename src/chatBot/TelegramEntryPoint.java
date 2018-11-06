@@ -18,92 +18,92 @@ import org.telegram.telegrambots.meta.generics.LongPollingBot;
 
 public class TelegramEntryPoint extends TelegramLongPollingBot
 {
-	private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
-	private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
-	private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
-	private static ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-	
+    private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
+    private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
+    
     public static void main(String[] args) 
     {
-    	ApiContextInitializer.init(); 
-    	TelegramBotsApi botapi = new TelegramBotsApi();
-    	try 
-    	{
-    		botapi.registerBot((LongPollingBot) new TelegramEntryPoint());
-    	}
-    	catch (TelegramApiException e) 
-    	{
-	        e.printStackTrace();
+        ApiContextInitializer.init(); 
+        TelegramBotsApi botapi = new TelegramBotsApi();
+        try 
+        {
+            botapi.registerBot((LongPollingBot) new TelegramEntryPoint());
+        }
+        catch (TelegramApiException e) 
+        {
+            e.printStackTrace();
         }
     }
     
     @Override
     public String getBotUsername() 
     {
-	    return BOT_USERNAME;            
+        return BOT_USERNAME;            
     }
 
     @Override
     public String getBotToken() 
     {
-    	return BOT_TOKEN;          
+        return BOT_TOKEN;          
     }
 
     @Override
     public void onUpdateReceived(Update update) 
     {
-    	long chatId = update.getMessage().getChatId();
-    	String userInput = update.getMessage().getText().toLowerCase();
-    	if (!dictionaryUser.containsKey(chatId))
-    	    dictionaryUser.put(chatId, new Chat(new Bot(), new Object()));
-    	Bot bot = dictionaryUser.get(chatId).getBot();
-    	Object locker = dictionaryUser.get(chatId).getLocker();
-    	Message userMessage = new Message();
-    	Message botMessage = new Message();
-    	userMessage.setTextMessage(userInput);
-    	synchronized(locker)
-    	{
-    	    botMessage = bot.reply(userMessage);
+        long chatId = update.getMessage().getChatId();
+        String userInput = update.getMessage().getText().toLowerCase();
+        Chat chat = dictionaryUser.computeIfAbsent(chatId, x -> new Chat(new Bot(), new Object()));
+        Bot bot = chat.getBot();
+        Object locker = chat.getLocker();
+        Message userMessage = new Message();
+        Message botMessage = new Message();
+        userMessage.setTextMessage(userInput);
+        synchronized(locker)
+        {
+            botMessage = bot.reply(userMessage);
             sendMsg(chatId, botMessage, userInput);    
-    	}
+        }
     }
     
-    private void setButtons(Message botMessage, SendMessage message)
-    {   	
-    	keyboardMarkup.setOneTimeKeyboard(true);
-		keyboardMarkup.setResizeKeyboard(true);
-		List<KeyboardRow> keyboard = new ArrayList<>();
-		KeyboardRow row = new KeyboardRow();
-	    
-		if (botMessage.isKeyboardNotEmpty) 
-		{
-			ArrayList<ArrayList<String>> listKeyboards = botMessage.getKeyboard();
-			for(int i = 0; i < listKeyboards.size(); i++) 
-			{
-				row = new KeyboardRow();
-				for (int j = 0; j < listKeyboards.get(i).size(); j++) 
-				{
-					row.add(listKeyboards.get(i).get(j));
-				}
-				keyboard.add(row);
-			}
-			keyboardMarkup.setKeyboard(keyboard);
-		}
+    private void setButtons(Message botMessage, SendMessage message, ReplyKeyboardMarkup keyboardMarkup)
+    {       
+        
+        keyboardMarkup.setOneTimeKeyboard(true);
+        keyboardMarkup.setResizeKeyboard(true);
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow rowButtons = new KeyboardRow();
+        
+        if (botMessage.isKeyboardNotEmpty) 
+        {
+            ArrayList<ArrayList<String>> listKeyboards = botMessage.getKeyboard();
+            for(ArrayList<String> line: listKeyboards) 
+            {
+                rowButtons = new KeyboardRow();
+                for (String button: line) 
+                {
+                    rowButtons.add(button);
+                }
+                keyboard.add(rowButtons);
+            }
+            keyboardMarkup.setKeyboard(keyboard);
+        }
     }
  
-	private void sendMsg(long chatId, Message botMessage, String userInput) 
-	{
-		SendMessage message = new SendMessage().setChatId(chatId).setText(botMessage.getTextMessage());		
-		setButtons(botMessage, message);		
-        message.setReplyMarkup(keyboardMarkup);	
+    private void sendMsg(long chatId, Message botMessage, String userInput) 
+    {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        SendMessage message = new SendMessage().setChatId(chatId).setText(botMessage.getTextMessage());        
+        setButtons(botMessage, message, keyboardMarkup);        
+        message.setReplyMarkup(keyboardMarkup);    
        
         try 
-        {        	
+        {            
             execute(message);
         } 
         catch (TelegramApiException e) 
         {
-        	e.printStackTrace();
+            e.printStackTrace();
         } 
-	}	
+    }    
 }

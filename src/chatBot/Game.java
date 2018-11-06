@@ -1,5 +1,5 @@
 package chatBot;
 
 public interface Game {
-	Message reply(Message userInput);
+    Message reply(Message userInput);
 }
