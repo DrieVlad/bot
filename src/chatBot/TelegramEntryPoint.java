@@ -67,15 +67,13 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     }
     
     private void setButtons(Message botMessage, SendMessage message, ReplyKeyboardMarkup keyboardMarkup)
-    {       
-        
-        keyboardMarkup.setOneTimeKeyboard(true);
-        keyboardMarkup.setResizeKeyboard(true);
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow rowButtons = new KeyboardRow();
-        
+    {             
         if (botMessage.isKeyboardNotEmpty) 
         {
+        	keyboardMarkup.setOneTimeKeyboard(true);
+            keyboardMarkup.setResizeKeyboard(true);
+            List<KeyboardRow> keyboard = new ArrayList<>();
+            KeyboardRow rowButtons = new KeyboardRow();
             ArrayList<ArrayList<String>> listKeyboards = botMessage.getKeyboard();
             for(ArrayList<String> line: listKeyboards) 
             {

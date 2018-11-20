@@ -20,12 +20,12 @@ public class TownsTest {
 	@Test
 	public void runPlayerTownTest()
 	{
-		Towns.lastLetter = "ф";
+		towns.lastLetter = "ф";
 		assertEquals("Что же вы ничего не ввели?! Говорите город на букву: Ф!", towns.runPlayer(""));
 		assertEquals("Ты играешь не по правилам. Назови город на букву Ф!", towns.runPlayer("Касли"));
 		assertEquals("Не жульничай! Ты называешь не город :)))", towns.runPlayer("фюзеляж"));
 		assertTrue(towns.runPlayer("Фролово").startsWith("Мой ход:"));	
-		Towns.lastLetter = "ф";
+		towns.lastLetter = "ф";
 		assertEquals("Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!", towns.runPlayer("Фролово"));
 	}
 	

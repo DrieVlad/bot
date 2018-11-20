@@ -8,8 +8,8 @@ import java.util.HashSet;
 public class Towns implements Game
 {
     private HashSet<String> usedCities = new HashSet<String>();
-    private static String firstLetter = "";
-    public static String lastLetter = "";
+    private String firstLetter = "";
+    public String lastLetter = "";
     private static AccessoryTowns helper = new AccessoryTowns();
     private static TownsContent reader = new TownsContent("Города");    
     private Random ran = new Random();    
