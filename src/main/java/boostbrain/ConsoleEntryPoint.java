@@ -30,12 +30,10 @@ public class ConsoleEntryPoint
                 Message botAnswer = new Message();                
                 parseUserInput = s_userInput.split(",");
                 userInput.setTextMessage(parseUserInput[1]);
-                botAnswer = dictionaryUser.computeIfAbsent(parseUserInput[0], x -> new Bot()).reply(userInput);    
+                botAnswer = dictionaryUser.computeIfAbsent(parseUserInput[0], x -> new Bot(new Statistic(firebase))).reply(userInput);
                 System.out.println(botAnswer.getTextMessage());
                 if (botAnswer.getTextMessage().indexOf("победил") >= 0)
                 {
-                    Statistic.set(parseUserInput[0], true);
-                    Statistic.get();
                 }
                 if (botAnswer.isKeyboardNotEmpty) 
                 {
@@ -48,7 +46,6 @@ public class ConsoleEntryPoint
                         }
                     }
                 }
-                firebase.saveDataInDatabase(parseUserInput[0]);
             }
             catch (ArrayIndexOutOfBoundsException e)
             {

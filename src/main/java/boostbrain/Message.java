@@ -8,6 +8,7 @@ public class Message
     private ArrayList<ArrayList<String>> keyboard;
     public boolean isKeyboardNotEmpty = false;
     private String userName;
+    private long chatId;
     
     public String getTextMessage()
     {
@@ -38,5 +39,15 @@ public class Message
     public void setUserName(String userName)
     {
         this.userName = userName;
+    }
+
+    public long getChatId()
+    {
+        return chatId;
+    }
+
+    public void setChatId(long chatId)
+    {
+        this.chatId = chatId;
     }
 }

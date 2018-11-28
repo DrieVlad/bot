@@ -12,8 +12,8 @@ import java.util.Map;
 
 
 public class Firebase {
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private static FirebaseDatabase firebaseDatabase;
+    private static DatabaseReference databaseReference;
 
     public void initFirebase() throws IOException {
         FileInputStream serviceAccount =
@@ -27,35 +27,35 @@ public class Firebase {
         FirebaseApp.initializeApp(options);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("/");
+
     }
 
-    public void getDatafromDatabase()
+    public void getDatafromDatabase(String userName , Statistic stats)
     {
-        System.out.println(1);
-        DatabaseReference childReference = databaseReference.child("example");
+        DatabaseReference childReference = databaseReference.child("users");
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(2);
 
                 Object a = dataSnapshot.getKey();
                 Object b = dataSnapshot.getValue();
+                System.out.println(b);
                 for (DataSnapshot user: dataSnapshot.getChildren()){
                     String chatId = user.getKey();
-                    DatabaseReference chatReference = databaseReference.child("123").child(chatId);
+                    DatabaseReference chatReference = databaseReference.child("users").child(chatId);
                     ValueEventListener valueEventListener = new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Object name = dataSnapshot.child("username").getValue();
                             Object wins = dataSnapshot.child("wins").getValue();
                             Object fails = dataSnapshot.child("fails").getValue();
-                            Statistic.win_Users.put(name.toString(), Integer.parseInt(wins.toString()));
-                            Statistic.loos_Users.put(name.toString(), Integer.parseInt(fails.toString()));
-                            System.out.println(Statistic.win_Users.toString());
-                            System.out.println(Statistic.loos_Users.toString());
+                            if (userName.equals(chatId)){
+                                stats.win = wins.toString();
+                                stats.los = fails.toString();
+                                System.out.println(chatId);
+                                System.out.println(userName);
+                            }
                         }
-
                         @Override
                         public void onCancelled(DatabaseError databaseError) {}
                     };
@@ -68,14 +68,16 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
     }
 
-    public void saveDataInDatabase(String username) {
 
-        DatabaseReference childReference = databaseReference.child("example");
-            Map<String, Object> hopperUpdates = new HashMap<>();
-            hopperUpdates.put("username", username);
-            hopperUpdates.put("wins", Statistic.getWin_Users(username));
-            hopperUpdates.put("fails", Statistic.getLos_Users(username));
-            String key = "123";
-            childReference.child(key).setValueAsync(hopperUpdates);
+    public void saveDataInDatabase(String userName, Integer wins, Integer fails) {
+
+        DatabaseReference childReference = databaseReference.child("users");
+        String key = userName;
+        Map<String, Object> hopperUpdates = new HashMap<>();
+
+        hopperUpdates.put("username", userName);
+        hopperUpdates.put("wins", wins);
+        hopperUpdates.put("fails", fails);
+        childReference.child(key).setValueAsync(hopperUpdates);
     }
 }

@@ -1,12 +1,7 @@
 package boostbrain;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +13,9 @@ public class GameContentFromFile {
     GameContentFromFile(String folderName)
     {
         String path = System.getProperty("user.dir") + "\\content\\" + folderName + "\\";
-        System.out.println(System.getProperty("user.dir"));
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         for (File file : listOfFiles) {
-            System.out.println(1);
             if (file.isFile()) {
                 String fileName = file.getName();
                 String letter = String.valueOf(fileName.substring(0, fileName.indexOf('.')));

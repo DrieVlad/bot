@@ -8,10 +8,11 @@ public class Bot {
     public final FSMStack fsm = new FSMStack();
     public boolean flagMillionaire = false;
     public Message message = new Message();
+    private static Statistic stats;
 
-    public Bot() 
-    {
+    public Bot(Statistic stat) {
         fsm.pushState(this::start);
+        stats = stat;
     }
     
     public Message start(Message userInput) {
@@ -81,7 +82,7 @@ public class Bot {
             game = new Towns(this);
             break;
         case ("миллионер"):        
-            game = new Millionaire(this);
+            game = new Millionaire(this, stats);
             break;
         default:            
             fsm.popState();
@@ -114,7 +115,8 @@ public class Bot {
                 message.setTextMessage("ℹ" + PhrasesBot.s_aboutMe);
                 break;
             case("статистика"):
-                message = Statistic.get();
+                String in = Long.toString(userInput.getChatId());
+                message = stats.get(in);
                 break;
             case("устал"):
                 fsm.stackReboot(this::launch);

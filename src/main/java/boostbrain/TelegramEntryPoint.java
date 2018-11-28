@@ -23,17 +23,17 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
     private static Firebase firebase = new Firebase();
+    //private static Statistic stats = new Statistic(firebase);
     
     public static void main(String[] args) 
     {
+        ApiContextInitializer.init(); 
+        TelegramBotsApi botapi = new TelegramBotsApi();
         try {
             firebase.initFirebase();
-            firebase.getDatafromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ApiContextInitializer.init(); 
-        TelegramBotsApi botapi = new TelegramBotsApi();
         try 
         {
             botapi.registerBot((LongPollingBot) new TelegramEntryPoint());
@@ -63,13 +63,14 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
         long chatId = update.getMessage().getChatId();
         String user_name = update.getMessage().getFrom().getUserName();
         String userInput = update.getMessage().getText().toLowerCase();
-        Chat chat = dictionaryUser.computeIfAbsent(chatId, x -> new Chat(new Bot(), new Object()));
+        Chat chat = dictionaryUser.computeIfAbsent(chatId, x -> new Chat(new Bot(new Statistic(firebase)), new Object()));
         Bot bot = chat.getBot();
         Object locker = chat.getLocker();
         Message userMessage = new Message();
         Message botMessage = new Message();
         userMessage.setTextMessage(userInput);
-        userMessage.setUserName(user_name);
+        userMessage.setChatId(chatId);
+        userMessage.setUserName("@" + user_name);
         synchronized(locker)
         {
             botMessage = bot.reply(userMessage);
