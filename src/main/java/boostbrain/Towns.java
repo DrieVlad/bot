@@ -1,8 +1,8 @@
 package boostbrain;
 
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 
 public class Towns implements Game
@@ -18,15 +18,19 @@ public class Towns implements Game
     private String alphabet = "абвгдежзиклмнопрстуфхцчшщэюя";    
     private Message message = null;
     private Bot bot;
+    private static Firebase firebase;
+    public String botTown="";
     
-    public Towns(Bot bot)
+    public Towns(Bot bot, Firebase fire)
     {
         this.bot = bot;
         this.message = bot.message;
+        firebase = fire;
+
     }
     
     public Message reply(Message userInput)
-    {    
+    {
         ArrayList<String> rowButtons = new ArrayList<>();
         ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
         bot.setHelpAndTired(rowButtons, keyboard);
@@ -34,12 +38,14 @@ public class Towns implements Game
         {                            
             int count = ran.nextInt(alphabet.length());
             lastLetter = String.valueOf(alphabet.charAt(count));
+
             message.setTextMessage(runBot());
             return message;
         }                        
         if (turnPlayer)
         {
-            message.setTextMessage(runPlayer(userInput.getTextMessage()));            
+
+            message.setTextMessage(runPlayer(userInput.getTextMessage()));
             return message;
         }
         message.setTextMessage("Игра окончена!");
@@ -47,8 +53,12 @@ public class Towns implements Game
     }
     
     private String runBot()
-    {        
-        String botTown = reader.nextTown(lastLetter);
+    {
+        synchronized (new Object()){
+            firebase.getTownsFromDatabase("города", lastLetter, this);
+        }
+
+        System.out.println("sdv"+ botTown);
         if (turnBot == true)
         {
             turnBot = false;
@@ -59,7 +69,8 @@ public class Towns implements Game
     }
     
     public String runPlayer(String userInput)
-    {        
+    {
+
         if (userInput.trim().isEmpty())
         {
             return "Что же вы ничего не ввели?! Говорите город на букву: " + lastLetter.toUpperCase() + "!";            
@@ -79,9 +90,11 @@ public class Towns implements Game
         if (helper.checkWordDictionary(userInput, usedCities))
         {
             lastLetter = helper.getLastSignificantLetter(userInput);
+
         } 
         else
-            return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";        
+            return "Ай-яй-яй! Это слово уже было названо. Попробуй еще раз!";
+
         return runBot();        
     }    
 }

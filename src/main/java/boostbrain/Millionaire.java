@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 public class Millionaire implements Game
 {
-    private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер");
+    private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер", this);
     public int level;
     public AskMillionaire ask = new AskMillionaire();
     private boolean flagReturn = false;
     private static String numberQuestions = "";
     private Message message = null;
     private Bot bot;
-    private Statistic stats;
+    public Statistic stats;
+    public static Firebase firebase;
 
     public Millionaire(Bot bot, Statistic stat)
     {
@@ -19,6 +20,8 @@ public class Millionaire implements Game
         this.bot = bot;
         this.message = bot.message;
         stats = stat;
+        firebase = stats.firebase;
+        firebase.getQuestionFromDatabase("вопросы", reader);
     }
             
     public Message reply(Message userInput)
@@ -36,7 +39,7 @@ public class Millionaire implements Game
             {
                 bot.fsm.stackReboot(bot::start);
                 message.setTextMessage("Возвращайся, как-нибудь сыграем еще!🦆");
-                stats.set(Long.toString(userInput.getChatId()), false);
+                stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(),  false);
                 rowButtons.add("Я скучаю!");
                 keyboard.add(rowButtons);
                 message.setKeyboard(keyboard);
@@ -53,6 +56,7 @@ public class Millionaire implements Game
         if (level == 1) 
         {
             ask = reader.nextAsk(level);
+
             botAnswer = ask.stringAsk();
             level++;
             message.setTextMessage(numberQuestions + botAnswer);    
@@ -95,7 +99,7 @@ public class Millionaire implements Game
                     flagReturn = true;
                     level = 1;
                     message.setTextMessage("Молодец, ты победил в игре \"Миллионер\"!🏆 Твой выигрыш составил 1200 очков! \nСыграем ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎");
-                    stats.set(Long.toString(userInput.getChatId()), true);
+                    stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(), true);
                     rowButtons.add("Да");
                     rowButtons.add("Нет");
                     keyboard.add(rowButtons);
@@ -117,17 +121,18 @@ public class Millionaire implements Game
                     int point;
                     point = ((level - 1) / 3) * 3 * 100;
                     message.setTextMessage("Вы выиграли " + point + " очков, в следующий раз получится лучше!😉👌 \n Ещё разок?😏  Отвечай \'да\'👍 или \'нет\'👎");
-                    stats.set(Long.toString(userInput.getChatId()), false);
+                    stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(), false);
                 }
                 else 
                 {
                     message.setTextMessage("Вы ничего не выиграли!😣 Ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎");
-                    stats.set(Long.toString(userInput.getChatId()), false);
+                    stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(), false);
                 }
                 level = 1;
                 flagReturn = true;            
                 rowButtons.add("Да");
                 rowButtons.add("Нет");
+                rowButtons.add("Статистика");
                 keyboard.add(rowButtons);    
             }
             rowButtons = new ArrayList<>();

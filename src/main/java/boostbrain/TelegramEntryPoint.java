@@ -22,7 +22,7 @@ public class TelegramEntryPoint extends TelegramLongPollingBot
     private static String BOT_USERNAME = System.getenv("BOT_USERNAME");
     private static String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static ConcurrentMap<Long,Chat> dictionaryUser = new ConcurrentHashMap<Long,Chat>();
-    private static Firebase firebase = new Firebase();
+    private static final Firebase firebase = new Firebase();
     //private static Statistic stats = new Statistic(firebase);
     
     public static void main(String[] args) 

@@ -9,10 +9,13 @@ public class Bot {
     public boolean flagMillionaire = false;
     public Message message = new Message();
     private static Statistic stats;
+    public String answer;
+    private Firebase firebase;
 
     public Bot(Statistic stat) {
         fsm.pushState(this::start);
         stats = stat;
+        firebase = stats.firebase;
     }
     
     public Message start(Message userInput) {
@@ -20,7 +23,16 @@ public class Bot {
         ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
         fsm.popState();
         fsm.pushState(this::launch);
-        message.setTextMessage("🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe);
+        firebase.getPhraseFromDatabase("фразы", "привет", this);
+        //message.setTextMessage("🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe);
+        try {
+            synchronized (new Object()){
+                Thread.sleep(3000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        message.setTextMessage(answer);
         row.add("Игра");
         row.add("Диалог");
         keyboard.add(row);
@@ -36,9 +48,18 @@ public class Bot {
         case ("игра"):
             fsm.popState();
             fsm.pushState(this::twoGame);
-            message.setTextMessage("У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
-                    + "Пиши название той игры, в которую хочешь сыграть😊. \n"
-                    + "Во что будем играть❔");
+            //message.setTextMessage("У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
+             //       + "Пиши название той игры, в которую хочешь сыграть😊. \n"
+              //      + "Во что будем играть❔");
+            firebase.getPhraseFromDatabase("фразы", "выборигра", this);
+            try {
+                synchronized (new Object()){
+                    Thread.sleep(3000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            message.setTextMessage(answer);
             row.add("Города");
             row.add("Миллионер");
             keyboard.add(row);
@@ -54,12 +75,30 @@ public class Bot {
         case (""):
             fsm.popState();
             fsm.pushState(this::launch);
-            message.setTextMessage("Скажи что-нибудь☺");
+            //message.setTextMessage("Скажи что-нибудь☺");
+            firebase.getPhraseFromDatabase("фразы", "призывы", this);
+            try {
+                synchronized (new Object()){
+                    Thread.sleep(3000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            message.setTextMessage(answer);
             return message;
         default:
             fsm.popState();
             fsm.pushState(this::launch);
-            message.setTextMessage("Извините, я вас не понял☹");
+            //message.setTextMessage("Извините, я вас не понял☹");
+            firebase.getPhraseFromDatabase("фразы", "непонимание", this);
+            try {
+                synchronized (new Object()){
+                    Thread.sleep(3000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            message.setTextMessage(answer);
             return message;        
         }
     }
@@ -79,7 +118,7 @@ public class Bot {
         Game game = null;
         switch (userInput.getTextMessage()) {
         case ("города"):
-            game = new Towns(this);
+            game = new Towns(this, stats.firebase);
             break;
         case ("миллионер"):        
             game = new Millionaire(this, stats);
@@ -87,7 +126,16 @@ public class Bot {
         default:            
             fsm.popState();
             fsm.pushState(this::twoGame);
-            message.setTextMessage("Извините, я вас не понял☹");
+            //message.setTextMessage("Извините, я вас не понял☹");
+            firebase.getPhraseFromDatabase("фразы", "непонимание", this);
+            try {
+                synchronized (new Object()){
+                    Thread.sleep(3000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            message.setTextMessage(answer);
             return message;
         }
         fsm.popState();
@@ -120,7 +168,16 @@ public class Bot {
                 break;
             case("устал"):
                 fsm.stackReboot(this::launch);
-                message.setTextMessage("Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨");
+                //message.setTextMessage("Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨");
+                firebase.getPhraseFromDatabase("фразы", "выбор", this);
+                try {
+                    synchronized (new Object()){
+                        Thread.sleep(3000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                message.setTextMessage(answer);
                 rowButtons.add("Игра");
                 rowButtons.add("Диалог");
                 keyboard.add(rowButtons);
@@ -129,11 +186,21 @@ public class Bot {
                 break;
             case("пока"):
                 fsm.stackReboot(this::start);
-                message.setTextMessage("До скорого!👋 Я всегда к твоим услугам🦆 \n");
+                firebase.getPhraseFromDatabase("фразы", "пока", this);
+                try {
+                    synchronized (new Object()){
+                        Thread.sleep(3000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                message.setTextMessage(answer);
+                //message.setTextMessage("До скорого!👋 Я всегда к твоим услугам🦆 \n");
                 rowButtons.add("Я скучаю!");
                 keyboard.add(rowButtons);
                 message.setKeyboard(keyboard);               
-        }    
+        }
+
         return message;        
     }    
 }
