@@ -1,7 +1,6 @@
 package boostbrain;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 
 public class Bot {
@@ -9,7 +8,6 @@ public class Bot {
     public boolean flagMillionaire = false;
     public Message message = new Message();
     private static Statistic stats;
-    public String answer;
     private Firebase firebase;
 
     public Bot(Statistic stat) {
@@ -23,16 +21,8 @@ public class Bot {
         ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
         fsm.popState();
         fsm.pushState(this::launch);
-        firebase.getPhraseFromDatabase("фразы", "привет", this);
         //message.setTextMessage("🦆Приветствую тебя, мой дорогой друг!👋\n" + PhrasesBot.s_aboutMe);
-        try {
-            synchronized (new Object()){
-                Thread.sleep(3000);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        message.setTextMessage(answer);
+        message.setTextMessage(firebase.getPhraseFromDatabase("привет"));
         row.add("Игра");
         row.add("Диалог");
         keyboard.add(row);
@@ -51,15 +41,7 @@ public class Bot {
             //message.setTextMessage("У меня есть две игры на выбор: \"Города\"🏘 и \"Миллионер\"💰. \n"
              //       + "Пиши название той игры, в которую хочешь сыграть😊. \n"
               //      + "Во что будем играть❔");
-            firebase.getPhraseFromDatabase("фразы", "выборигра", this);
-            try {
-                synchronized (new Object()){
-                    Thread.sleep(3000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.setTextMessage(answer);
+            message.setTextMessage(firebase.getPhraseFromDatabase("выборигра"));
             row.add("Города");
             row.add("Миллионер");
             keyboard.add(row);
@@ -76,41 +58,24 @@ public class Bot {
             fsm.popState();
             fsm.pushState(this::launch);
             //message.setTextMessage("Скажи что-нибудь☺");
-            firebase.getPhraseFromDatabase("фразы", "призывы", this);
-            try {
-                synchronized (new Object()){
-                    Thread.sleep(3000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.setTextMessage(answer);
+            message.setTextMessage(firebase.getPhraseFromDatabase("призывы"));
             return message;
         default:
             fsm.popState();
             fsm.pushState(this::launch);
             //message.setTextMessage("Извините, я вас не понял☹");
-            firebase.getPhraseFromDatabase("фразы", "непонимание", this);
-            try {
-                synchronized (new Object()){
-                    Thread.sleep(3000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.setTextMessage(answer);
+            message.setTextMessage(firebase.getPhraseFromDatabase("непонимание"));
             return message;        
         }
     }
 
     private Message dialogueQuestion(Message userInput)
     {        
-        int count1;
-        int count2;
-        Random randomer = new Random();
-        count1 = randomer.nextInt(PhrasesBot.s_questions.length);
-        count2 = randomer.nextInt(PhrasesBot.s_phrases.length);
-        message.setTextMessage(PhrasesBot.s_phrases[count2] + " " + PhrasesBot.s_questions[count1]);
+        String count1;
+        String count2;
+        count1 = firebase.getDialogFromDatabase("ответ");
+        count2 = firebase.getDialogFromDatabase("вопрос");
+        message.setTextMessage(count1 + " " + count2);
         return message;        
     }
         
@@ -127,15 +92,7 @@ public class Bot {
             fsm.popState();
             fsm.pushState(this::twoGame);
             //message.setTextMessage("Извините, я вас не понял☹");
-            firebase.getPhraseFromDatabase("фразы", "непонимание", this);
-            try {
-                synchronized (new Object()){
-                    Thread.sleep(3000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.setTextMessage(answer);
+            message.setTextMessage(firebase.getPhraseFromDatabase("непонимание"));
             return message;
         }
         fsm.popState();
@@ -169,15 +126,8 @@ public class Bot {
             case("устал"):
                 fsm.stackReboot(this::launch);
                 //message.setTextMessage("Поиграем или пообщаемся?😏 Пиши: \"игра\"🕹 или \"диалог\"📨");
-                firebase.getPhraseFromDatabase("фразы", "выбор", this);
-                try {
-                    synchronized (new Object()){
-                        Thread.sleep(3000);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                message.setTextMessage(answer);
+
+                message.setTextMessage(firebase.getPhraseFromDatabase("выбор"));
                 rowButtons.add("Игра");
                 rowButtons.add("Диалог");
                 keyboard.add(rowButtons);
@@ -186,15 +136,7 @@ public class Bot {
                 break;
             case("пока"):
                 fsm.stackReboot(this::start);
-                firebase.getPhraseFromDatabase("фразы", "пока", this);
-                try {
-                    synchronized (new Object()){
-                        Thread.sleep(3000);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                message.setTextMessage(answer);
+                message.setTextMessage(firebase.getPhraseFromDatabase("пока"));
                 //message.setTextMessage("До скорого!👋 Я всегда к твоим услугам🦆 \n");
                 rowButtons.add("Я скучаю!");
                 keyboard.add(rowButtons);

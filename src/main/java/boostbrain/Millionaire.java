@@ -21,7 +21,6 @@ public class Millionaire implements Game
         this.message = bot.message;
         stats = stat;
         firebase = stats.firebase;
-        firebase.getQuestionFromDatabase("вопросы", reader);
     }
             
     public Message reply(Message userInput)

@@ -19,7 +19,6 @@ public class Towns implements Game
     private Message message = null;
     private Bot bot;
     private static Firebase firebase;
-    public String botTown="";
     
     public Towns(Bot bot, Firebase fire)
     {
@@ -54,9 +53,7 @@ public class Towns implements Game
     
     private String runBot()
     {
-        synchronized (new Object()){
-            firebase.getTownsFromDatabase("города", lastLetter, this);
-        }
+        String botTown = firebase.getTownsFromDatabase(lastLetter);
 
         System.out.println("sdv"+ botTown);
         if (turnBot == true)
