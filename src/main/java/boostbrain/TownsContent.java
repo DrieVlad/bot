@@ -1,15 +1,14 @@
 package boostbrain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
-public class TownsContent extends GameContentFromFile
+public class TownsContent
 {
-    public TownsContent(String folderName)
-    {
-        super(folderName);
-    }
+    Map<String, ArrayList<String>> dictContentForGames = new HashMap<String, ArrayList<String>>();
     
     public String nextTown(String firstLetter)
     {

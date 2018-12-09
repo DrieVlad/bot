@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Millionaire implements Game
 {
-    private MillionaireContent reader = new MillionaireContent("Вопросы Миллионер", this);
+    private MillionaireContent reader = new MillionaireContent(this);
     public int level;
     public AskMillionaire ask = new AskMillionaire();
     private boolean flagReturn = false;

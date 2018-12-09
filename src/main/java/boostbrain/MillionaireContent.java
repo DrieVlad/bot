@@ -1,14 +1,12 @@
 package boostbrain;
 
-public class MillionaireContent extends GameContentFromFile
+public class MillionaireContent
 {
     private Millionaire millionaire;
 
-    public MillionaireContent(String folderName, Millionaire million)
+    public MillionaireContent(Millionaire million)
     {
-        super(folderName);
         millionaire = million;
-
     }
 
     public AskMillionaire nextAsk(int level)

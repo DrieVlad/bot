@@ -11,7 +11,7 @@ public class Towns implements Game
     private static String firstLetter = "";
     public static String lastLetter = "";
     private static AccessoryTowns helper = new AccessoryTowns();
-    private static TownsContent reader = new TownsContent("Города");    
+    private static TownsContent reader = new TownsContent();
     private Random ran = new Random();    
     private boolean turnBot = true;
     private boolean turnPlayer = false;

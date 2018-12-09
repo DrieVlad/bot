@@ -9,6 +9,7 @@ public class Bot {
     public Message message = new Message();
     private static Statistic stats;
     private Firebase firebase;
+    CriticismReaction critic = new CriticismReaction(stats);
 
     public Bot(Statistic stat) {
         fsm.pushState(this::start);
@@ -65,6 +66,7 @@ public class Bot {
             fsm.pushState(this::launch);
             //message.setTextMessage("Извините, я вас не понял☹");
             message.setTextMessage(firebase.getPhraseFromDatabase("непонимание"));
+            critic.criticsCheck(userInput.getChatId(), userInput.getTextMessage());
             return message;        
         }
     }
@@ -93,6 +95,7 @@ public class Bot {
             fsm.pushState(this::twoGame);
             //message.setTextMessage("Извините, я вас не понял☹");
             message.setTextMessage(firebase.getPhraseFromDatabase("непонимание"));
+            critic.criticsCheck(userInput.getChatId(), userInput.getTextMessage());
             return message;
         }
         fsm.popState();

@@ -23,17 +23,8 @@ public class AccessoryTowns {
     }
         
     public boolean checkCity(TownsContent reader, String userCity, String firstLetter)
-    {        
-        userCity = userCity.toLowerCase();
-        HashSet <String> allTownsOnLetter = new HashSet<String>(reader.dictContentForGames.get(firstLetter));
-        for (String town : allTownsOnLetter)
-        {
-            if (town.toLowerCase().equals(userCity))
-            {
-                return true;
-            }
-        }
-        return false;          
+    {
+        return Firebase.checkTownsFromDatabase(firstLetter.toLowerCase(), userCity.toLowerCase());
     }
 
     public Boolean checkWordDictionary(String city, HashSet<String> usedCities)

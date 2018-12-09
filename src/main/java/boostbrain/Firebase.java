@@ -20,7 +20,7 @@ public class Firebase {
 
     public void initFirebase() throws IOException {
         FileInputStream serviceAccount =
-                new FileInputStream("C:\\Users\\vladd\\Documents\\GitHub\\chatbot-bce26-firebase-adminsdk-fh9e3-2730ceecc9.json");
+                new FileInputStream(System.getProperty("user.dir") + "\\chatbot-bce26-firebase-adminsdk-fh9e3-2730ceecc9.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -84,7 +84,7 @@ public class Firebase {
     }
 
 
-    public static synchronized String getTownsFromDatabase(String childName)
+    public final synchronized String getTownsFromDatabase(String childName)
     {
         Object event = new Object();
         String[] outString = new String[1];
@@ -93,6 +93,7 @@ public class Firebase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                System.out.println(dataSnapshot.getValue());
                 long num = dataSnapshot.getChildrenCount();
                 int r = random.nextInt((int) num);
                 int k = 1;
@@ -123,6 +124,43 @@ public class Firebase {
             e.printStackTrace();
         }
         return outString[0];
+    }
+
+    public final static synchronized Boolean checkTownsFromDatabase(String childName, String checkTown)
+    {
+        Object event = new Object();
+        Boolean[] outBool = new Boolean[1];
+        DatabaseReference childReference = databaseReference.child("города").child(childName);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                String towns = dataSnapshot.getValue().toString().toLowerCase();
+                System.out.println(towns);
+                if (towns.lastIndexOf(checkTown) != -1){
+                    outBool[0] = true;
+                }
+                else {
+                    outBool[0] = false;
+                }
+
+
+                synchronized (event){
+                    event.notify();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        childReference.addListenerForSingleValueEvent(eventListener);
+        try {
+            synchronized (event){
+                event.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return outBool[0];
     }
 
     public final synchronized String getQuestionFromDatabase(String nameSection)
@@ -172,6 +210,7 @@ public class Firebase {
     public final synchronized String getPhraseFromDatabase(String childName)
     {
         Object event = new Object();
+
         String[] outString = new String[1];
         DatabaseReference childReference = databaseReference.child("фразы").child(childName);
         ValueEventListener eventListener = new ValueEventListener()
@@ -297,6 +336,44 @@ public class Firebase {
         childReference.addChildEventListener(eventListener);
     }
 
+    public final static synchronized String getCriticismPhraseFromDatabase()
+    {
+        Object event = new Object();
+        String[] outString = new String[1];
+        DatabaseReference childReference = databaseReference.child("критика").child("слова");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                String phrase = dataSnapshot.getValue().toString().toLowerCase();
+                System.out.println(phrase);
+                outString[0] = phrase;
+
+
+                synchronized (event){
+                    event.notify();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        childReference.addListenerForSingleValueEvent(eventListener);
+        try {
+            synchronized (event){
+                event.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return outString[0];
+    }
+
+    public void saveCriticiszmInDatabase(String key,String answer) {
+
+        DatabaseReference childReference = databaseReference.child("критика").child("сообщения");
+
+        childReference.child(key).setValueAsync(answer);;
+    }
 
     public void saveDataInDatabase(String key, String userName, Integer wins, Integer fails) {
 
