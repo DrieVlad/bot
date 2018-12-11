@@ -53,7 +53,7 @@ public class Towns implements Game
     
     private String runBot()
     {
-        String botTown = firebase.getTownsFromDatabase(lastLetter);
+        String botTown = firebase.getPhraseFromDatabase("города",lastLetter);
 
         System.out.println("sdv"+ botTown);
         if (turnBot == true)

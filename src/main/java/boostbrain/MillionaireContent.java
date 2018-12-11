@@ -11,7 +11,7 @@ public class MillionaireContent
 
     public AskMillionaire nextAsk(int level)
     {
-        String qestionUp = millionaire.firebase.getQuestionFromDatabase(Integer.toString(level));
+        String qestionUp = millionaire.firebase.getPhraseFromDatabase("вопросы", Integer.toString(level));
 
         System.out.println(level);
         System.out.println(qestionUp);

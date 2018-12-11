@@ -16,7 +16,6 @@ public class Firebase {
     final static Random random = new Random();
     private ChildEventListener eventListener;
     private Query childReference;
-    public List<WinLose> topStats = new ArrayList<WinLose>();
 
     public void initFirebase() throws IOException {
         FileInputStream serviceAccount =
@@ -33,7 +32,7 @@ public class Firebase {
 
     }
 
-    public final synchronized void getDatafromDatabase(String userName , Statistic stats)
+    public final synchronized void getDatafromDatabase(String userName, Statistic stats)
     {
         DatabaseReference childReference = databaseReference.child("users").child(userName);
         Object event = new Object();
@@ -41,29 +40,16 @@ public class Firebase {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Object a = dataSnapshot.getKey();
-                Object b = dataSnapshot.getValue();
-                System.out.println(b);
-                for (DataSnapshot user: dataSnapshot.getChildren())
-                {
-                    String chatId = user.getKey();
-                    if (userName.equals(chatId))
-                    {
-                        Object name = dataSnapshot.child("username").getValue();
-                        Object wins = dataSnapshot.child("wins").getValue();
-                        Object fails = dataSnapshot.child("fails").getValue();
-                        stats.win = wins.toString();
-                        stats.los = fails.toString();
-                        WinLose winLose = new WinLose();
-                        winLose.win = wins.toString();
-                        winLose.lose = fails.toString();
-                        winLose.username = name.toString();
-                        topStats.add(winLose);
-                    }
-
-
-                }
+                Object name = dataSnapshot.child("username").getValue();
+                Object wins = dataSnapshot.child("wins").getValue();
+                Object fails = dataSnapshot.child("fails").getValue();
+                stats.win = wins.toString();
+                stats.los = fails.toString();
+                WinLose winLose = new WinLose();
+                winLose.win = wins.toString();
+                winLose.lose = fails.toString();
+                winLose.username = name.toString();
+                //topStats.add(winLose);
                 synchronized (event){
                     event.notify();
                 }
@@ -79,72 +65,25 @@ public class Firebase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //return sdfsdf
-
     }
 
-
-    public final synchronized String getTownsFromDatabase(String childName)
-    {
-        Object event = new Object();
-        String[] outString = new String[1];
-        DatabaseReference childReference = databaseReference.child("города").child(childName);
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                System.out.println(dataSnapshot.getValue());
-                long num = dataSnapshot.getChildrenCount();
-                int r = random.nextInt((int) num);
-                int k = 1;
-                for (DataSnapshot allCity: dataSnapshot.getChildren())
-                {
-                    if (k == r + 1)
-                    {
-                        System.out.println(childName);
-                        Object city = dataSnapshot.child(Integer.toString(k)).getValue();
-                        System.out.println(city.toString());
-                        outString[0] = city.toString();
-                    }
-                    k++;
-                }
-                synchronized (event){
-                    event.notify();
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-        childReference.addListenerForSingleValueEvent(eventListener);
-        try {
-            synchronized (event){
-                event.wait();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return outString[0];
-    }
-
-    public final static synchronized Boolean checkTownsFromDatabase(String childName, String checkTown)
+    public final static synchronized Boolean checkTownsFromDatabase(String letter, String townToCheck)
     {
         Object event = new Object();
         Boolean[] outBool = new Boolean[1];
-        DatabaseReference childReference = databaseReference.child("города").child(childName);
+        DatabaseReference childReference = databaseReference.child("города").child(letter);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 String towns = dataSnapshot.getValue().toString().toLowerCase();
                 System.out.println(towns);
-                if (towns.lastIndexOf(checkTown) != -1){
+                if (towns.lastIndexOf(townToCheck) != -1){
                     outBool[0] = true;
                 }
                 else {
                     outBool[0] = false;
                 }
-
-
                 synchronized (event){
                     event.notify();
                 }
@@ -163,75 +102,27 @@ public class Firebase {
         return outBool[0];
     }
 
-    public final synchronized String getQuestionFromDatabase(String nameSection)
+    public final synchronized String getPhraseFromDatabase(String nameSection, String childName)
     {
         Object event = new Object();
         String[] outString = new String[1];
-        DatabaseReference childReference = databaseReference.child("вопросы").child(nameSection);
+        DatabaseReference childReference = databaseReference.child(nameSection).child(childName);
         ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                int k = 1;
-                long num = dataSnapshot.getChildrenCount();
-                int r = random.nextInt((int) num);
-
-                for (DataSnapshot quest: dataSnapshot.getChildren())
-                {
-                    if (k == r + 1){
-                        String askID = quest.getKey();
-                        System.out.println("id   " + askID);
-                        System.out.println("rand   " +r + 1);
-                        Object question = quest.getValue();
-
-                        System.out.println("quest   "+question.toString());
-                        outString[0] = question.toString();
-                    }
-                    k++;
-                }
-                synchronized (event){
-                    event.notify();
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-        childReference.addListenerForSingleValueEvent(eventListener);
-        try {
-            synchronized (event){
-                event.wait();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return outString[0];
-    }
-
-    public final synchronized String getPhraseFromDatabase(String childName)
-    {
-        Object event = new Object();
-
-        String[] outString = new String[1];
-        DatabaseReference childReference = databaseReference.child("фразы").child(childName);
-        ValueEventListener eventListener = new ValueEventListener()
-        {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                int k = 1;
                 long num = dataSnapshot.getChildrenCount();
                 int r = random.nextInt((int) num);
-                int k = 1;
-                for (DataSnapshot allCity: dataSnapshot.getChildren())
-                {
-                    if (k == r + 1)
-                    {
-                        System.out.println(childName);
-                        Object phrase = dataSnapshot.child(Integer.toString(k)).getValue();
-                        System.out.println(phrase.toString());
-                        outString[0] = phrase.toString();
-                    }
-                    k++;
-                }
+                DataSnapshot quest =  dataSnapshot.child(Integer.toString(r+1));
+
+                String askID = quest.getKey();
+                System.out.println("id   " + askID);
+                System.out.println("rand   " +r + 1);
+                Object question = quest.getValue();
+
+                System.out.println("quest   "+question.toString());
+                outString[0] = question.toString();
                 synchronized (event){
                     event.notify();
                 }
@@ -293,22 +184,22 @@ public class Firebase {
         return outString[0];
     }
 
-    public void takeFiveFirst(Statistic stats)
+    public List<WinLose> takeFiveFirst()
     {
+        Object event = new Object();
+        List<WinLose> topStats = new ArrayList<>();
+        int[] i = {0};
+
         if (childReference != null && eventListener != null) {
             childReference.removeEventListener(eventListener);
         }
-
         childReference = databaseReference.child("users").orderByChild("wins").limitToLast(5);
         eventListener = new ChildEventListener() {
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-
                 Object name = dataSnapshot.child("username").getValue();
                 Object wins = dataSnapshot.child("wins").getValue();
                 Object fails = dataSnapshot.child("fails").getValue();
@@ -317,23 +208,35 @@ public class Firebase {
                 winLose.lose = fails.toString();
                 winLose.username = name.toString();
                 topStats.add(winLose);
-            }
+                i[0]++;
 
+                if(i[0] == 4) {
+                    synchronized (event) {
+                        event.notify();
+                    }
+                }
+            }
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-                takeFiveFirst(stats);
+                //takeFiveFirst(stats);
             }
-
             @Override
             public void onChildRemoved(DataSnapshot snapshot) {
             }
-
             @Override
             public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
             }
-
         };
-        childReference.addChildEventListener(eventListener);
+        childReference.addChildEventListener(eventListener); //!
+        try {
+            synchronized (event) {
+
+                event.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return topStats;
     }
 
     public final static synchronized String getCriticismPhraseFromDatabase()

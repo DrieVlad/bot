@@ -2,29 +2,30 @@ package boostbrain;
 
 public class CriticismReaction {
     public static Firebase firebase;
+    private static String swearing;
 
     public CriticismReaction(Statistic stat){
         firebase = stat.firebase;
     }
 
-    public void criticsCheck(Long chatId, String userInput) {
-        boolean fuck = false;
-        Object event = new Object();
-        String swearing = firebase.getCriticismPhraseFromDatabase();
+    public Boolean isCritics(Long chatId, String userInput) {
+        boolean checkCriticPhrase = false;
+        swearing = firebase.getCriticismPhraseFromDatabase();
 
         for (String swear : userInput.split(" "))
         {
             System.out.println(swear);
             if (swearing.contains(swear)){
-                fuck = true;
+                checkCriticPhrase = true;
             }
 
         }
 
-        if(fuck)
+        if(checkCriticPhrase)
         {
             System.out.println(userInput);
             firebase.saveCriticiszmInDatabase(Long.toString(chatId) + userInput, userInput);
         }
+        return checkCriticPhrase;
     }
 }

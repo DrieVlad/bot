@@ -13,6 +13,7 @@ public class Millionaire implements Game
     private Bot bot;
     public Statistic stats;
     public static Firebase firebase;
+    public CriticismReaction critic = new CriticismReaction(stats);
 
     public Millionaire(Bot bot, Statistic stat)
     {
@@ -37,7 +38,7 @@ public class Millionaire implements Game
             if (userInput.getTextMessage().equals("нет"))
             {
                 bot.fsm.stackReboot(bot::start);
-                message.setTextMessage("Возвращайся, как-нибудь сыграем еще!🦆");
+                message.setTextMessage(firebase.getPhraseFromDatabase("фразы","возврат"));
                 stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(),  false);
                 rowButtons.add("Я скучаю!");
                 keyboard.add(rowButtons);
@@ -48,7 +49,7 @@ public class Millionaire implements Game
                flagReturn = false;
             else
             {
-                message.setTextMessage("Я тебя не понял :(");
+                message.setTextMessage(firebase.getPhraseFromDatabase("фразы","непонимание"));
                 return message;
             }
         }
@@ -124,7 +125,7 @@ public class Millionaire implements Game
                 }
                 else 
                 {
-                    message.setTextMessage("Вы ничего не выиграли!😣 Ещё разок?😏 Отвечай \'да\'👍 или \'нет\'👎");
+                    message.setTextMessage(firebase.getPhraseFromDatabase("фразы","поражение"));
                     stats.set(Long.toString(userInput.getChatId()), userInput.getUserName(), false);
                 }
                 level = 1;
