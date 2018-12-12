@@ -111,7 +111,6 @@ public class Firebase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                int k = 1;
                 long num = dataSnapshot.getChildrenCount();
                 int r = random.nextInt((int) num);
                 DataSnapshot quest =  dataSnapshot.child(Integer.toString(r+1));
@@ -139,6 +138,46 @@ public class Firebase {
             e.printStackTrace();
         }
         return outString[0];
+    }
+
+    public final synchronized String[] getFeedbackFromDatabase()
+    {
+        Object event = new Object();
+        String[] outString = new String[2];
+        DatabaseReference childReference = databaseReference.child("критика").child("сообщения");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                int k = 0;
+                long num = dataSnapshot.getChildrenCount();
+                int r = random.nextInt((int) num);
+
+                for (DataSnapshot quest: dataSnapshot.getChildren()){
+                    if (k == r){
+                        outString[0] = quest.getKey().toString();
+                        outString[1] = quest.getValue().toString();
+                        break;
+                    }
+                    k++;
+                }
+                synchronized (event){
+                    event.notify();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        childReference.addListenerForSingleValueEvent(eventListener);
+        try {
+            synchronized (event){
+                event.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return outString;
     }
 
     public final synchronized String getDialogFromDatabase(String childName)
@@ -239,19 +278,19 @@ public class Firebase {
         return topStats;
     }
 
-    public final static synchronized String getCriticismPhraseFromDatabase()
+    public final static synchronized String[] getCriticismPhraseFromDatabase()
     {
         Object event = new Object();
-        String[] outString = new String[1];
+        String[] swearings = new String[635];
         DatabaseReference childReference = databaseReference.child("критика").child("слова");
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                String phrase = dataSnapshot.getValue().toString().toLowerCase();
-                System.out.println(phrase);
-                outString[0] = phrase;
-
+                String[] foo = dataSnapshot.getValue().toString().toLowerCase().split(", ");
+                for(int i = 0; i < foo.length; i++) {
+                    swearings[i] = foo[i];
+                }
 
                 synchronized (event){
                     event.notify();
@@ -261,6 +300,7 @@ public class Firebase {
             public void onCancelled(DatabaseError databaseError) {}
         };
         childReference.addListenerForSingleValueEvent(eventListener);
+
         try {
             synchronized (event){
                 event.wait();
@@ -268,7 +308,7 @@ public class Firebase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return outString[0];
+        return swearings;
     }
 
     public void saveCriticiszmInDatabase(String key,String answer) {

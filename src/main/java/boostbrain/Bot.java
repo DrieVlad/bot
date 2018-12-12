@@ -10,6 +10,7 @@ public class Bot {
     private static Statistic stats;
     private Firebase firebase;
     private CriticismReaction critic = new CriticismReaction(stats);
+    private static String botPasswd = "крокодил";
 
     public Bot(Statistic stat) {
         fsm.pushState(this::start);
@@ -36,6 +37,11 @@ public class Bot {
         ArrayList<String> row = new ArrayList<>();
         ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
         switch (userInput.getTextMessage()) {
+            case ("я админ"):
+                fsm.popState();
+                fsm.pushState(this::isAdmin);
+                message.setTextMessage("Сколько нужно вертолетов, чтобы научить летать президента?");
+                return message;
             case ("игра"):
                 fsm.popState();
                 fsm.pushState(this::twoGame);
@@ -108,13 +114,50 @@ public class Bot {
         message.setKeyboard(keyboard);
     }
 
+    public Message criticsAdd(Message userInput) {
+        message.setTextMessage("Хорошо, мы попробуем это учесть");
+        String chatId = Long.toString(userInput.getChatId());
+        firebase.saveCriticiszmInDatabase(chatId + userInput.getTextMessage(), userInput.getTextMessage());
+        return message;
+    }
+
+    public Message critics(Message userInput){
+        message.setTextMessage("Хорошо, мы попробуем это учесть");
+        fsm.popState();
+        return criticsAdd(userInput);
+    }
+
+    public Message isAdmin(Message userInput) {
+        System.out.println(botPasswd);
+        if (userInput.getTextMessage().equals(botPasswd))
+        {
+            fsm.popState();
+            fsm.pushState(this::adminMode);
+            message.setTextMessage("Здравствуй, господин, чего желаешь?");
+        }
+        else {
+            message.setTextMessage(firebase.getPhraseFromDatabase("фразы","непонимание"));
+            fsm.popState();
+            fsm.pushState(this::launch);
+        }
+        return message;
+    }
+
+    public Message adminMode(Message userInput) {
+        Admin admin = new Admin(firebase, this);
+        fsm.popState();
+        fsm.pushState(admin::adminManage);
+        return reply(userInput);
+    }
+
     public Message reply(Message userInput) {
         ArrayList<String> rowButtons = new ArrayList<>();
         ArrayList<ArrayList<String>> keyboard = new ArrayList<>();
         message = fsm.update(userInput);
 
         if (critic.isCritics(userInput.getChatId(), userInput.getTextMessage())){
-            message.setTextMessage(firebase.getPhraseFromDatabase("фразы","ругань"));
+            fsm.pushState(this::critics);
+            message.setTextMessage(firebase.getPhraseFromDatabase("фразы","ругань") + "\nМожет объяснишь что не так?");
         }
         else {
             switch (userInput.getTextMessage()) {
