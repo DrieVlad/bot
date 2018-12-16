@@ -60,7 +60,7 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -94,7 +94,7 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -132,7 +132,7 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -172,12 +172,19 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return outString;
+    }
+
+    public void removeFeedback(String key) {
+
+        DatabaseReference childReference = databaseReference.child("критика").child("сообщения");
+
+        childReference.child(key).removeValueAsync();;
     }
 
     public final synchronized String getDialogFromDatabase(String childName)
@@ -215,7 +222,7 @@ public class Firebase {
         childReference.addListenerForSingleValueEvent(eventListener);
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -223,20 +230,23 @@ public class Firebase {
         return outString[0];
     }
 
-    public List<WinLose> takeFiveFirst()
-    {
+    public ArrayList<WinLose> takeFiveFirst() {
+        ArrayList<WinLose> topStats = new ArrayList<WinLose>();
         Object event = new Object();
-        List<WinLose> topStats = new ArrayList<>();
-        int[] i = {0};
 
-        if (childReference != null && eventListener != null) {
+        if (childReference != null && eventListener != null)
+        {
             childReference.removeEventListener(eventListener);
         }
+
         childReference = databaseReference.child("users").orderByChild("wins").limitToLast(5);
         eventListener = new ChildEventListener() {
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                event.notifyAll();
             }
+
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Object name = dataSnapshot.child("username").getValue();
@@ -246,31 +256,28 @@ public class Firebase {
                 winLose.win = wins.toString();
                 winLose.lose = fails.toString();
                 winLose.username = name.toString();
-                topStats.add(winLose);
-                i[0]++;
-
-                if(i[0] == 4) {
-                    synchronized (event) {
-                        event.notify();
-                    }
-                }
+                topStats.add(0, winLose);
             }
+
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-                //takeFiveFirst(stats);
+                synchronized(event)
+                {
+                    event.notify();
+                }
             }
-            @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-            }
-            @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
-            }
-        };
-        childReference.addChildEventListener(eventListener); //!
-        try {
-            synchronized (event) {
 
-                event.wait();
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {}
+        };
+
+        try {
+            synchronized(event) {
+                childReference.addChildEventListener(eventListener);
+                event.wait(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -303,7 +310,7 @@ public class Firebase {
 
         try {
             synchronized (event){
-                event.wait();
+                event.wait(5000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

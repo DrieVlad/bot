@@ -17,14 +17,12 @@ public class Statistic{
 
     public Message get(String userId) {
         Message message = new Message();
-        //firebase.topStats.clear();
         List<WinLose> topStats = firebase.takeFiveFirst();
-        System.out.println(topStats.size());
         String top = "";
         if(topStats.size() == 0)
             top = "fuck, it's broken";
         else {
-            for (int i = topStats.size() - 1; i >= 0; i--) {
+            for (int i = 0; i < topStats.size(); i++) {
                 top += topStats.get(i).username + ": ➕ " +
                         topStats.get(i).win + " ➖ " +
                         topStats.get(i).lose + "\n";
